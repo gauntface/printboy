@@ -57,6 +57,7 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	cmd := exec.Command("lp", strings.Join(args, " "))
 	o, err := cmd.CombinedOutput()
 	if err != nil {
+		fmt.Printf("command: lp %v\n\ncommand output: %v\n\ncommand error: %v\n", strings.Join(args, " "), string(o), err)
 		res.WriteHeader(http.StatusBadRequest)
 		res.Write([]byte(fmt.Sprintf("Unable to run print job.\nError: %v.\n\nOutput: %v", err, string(o))))
 		return
