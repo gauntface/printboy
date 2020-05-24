@@ -16,14 +16,14 @@ func Init() (string, error) {
 	}
 
 	for _, p := range paths {
-		fileinfo, err := os.Stat(p)
+		_, err := os.Stat(p)
 		if err != nil {
 			if os.IsNotExist(err) {
 				continue
 			}
 			return "", err
 		}
-		return fileinfo.Name(), nil
+		return p, nil
 	}
 
 	return "", errors.New("unable to find static dir")
