@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gauntface/miniworks-label-print-server/handlers/api/print"
+	"github.com/gauntface/miniworks-label-print-server/handlers/html/index"
 	"github.com/gauntface/miniworks-label-print-server/handlers/staticfiles"
 	"github.com/gauntface/miniworks-label-print-server/runtime/staticassets"
 )
@@ -38,7 +39,8 @@ func (c *client) run() error {
 	fmt.Printf("📂 Static Assets: %v\n", assetsDir)
 
 	http.Handle("/api/print", print.BuildHandler())
-	http.Handle("/", staticfiles.BuildHandler(assetsDir))
+	http.Handle("/static", staticfiles.BuildHandler(assetsDir))
+	http.Handle("/", index.BuildHandler())
 
 	fmt.Printf("Listening on port %v\n", *port)
 	err = http.ListenAndServe(fmt.Sprintf(":%v", *port), nil)
