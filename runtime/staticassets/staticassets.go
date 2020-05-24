@@ -1,23 +1,30 @@
 package staticassets
 
 import (
-	"fmt"
+	"errors"
+	"os"
 	"path/filepath"
-
-	"github.com/markbates/pkger"
 )
 
 func Init() (string, error) {
-	if err := pkger.MkdirAll("/static", 0766); err != nil {
-		return "", fmt.Errorf("failed to make static directory: %w", err)
+	paths := []string{
+		"static",
+	}
+	v, ok := os.LookupEnv("GOPATH")
+	if ok {
+		paths = append(paths, filepath.Join(v, "src", "github.com", "gauntface", "miniworks-label-print-server", "static"))
 	}
 
-	i, err := pkger.Current()
-	if err != nil {
-		return "", fmt.Errorf("Unable to get info: %w", err)
+	for _, p := range paths {
+		fileinfo, err := os.Stat(p)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return "", err
+		}
+		return fileinfo.Name(), nil
 	}
 
-	fmt.Printf("📂 pkger info: %+v\n", i)
-
-	return filepath.Join(i.Dir, "static"), nil
+	return "", errors.New("unable to find static dir")
 }

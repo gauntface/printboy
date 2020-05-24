@@ -2,7 +2,6 @@
 
 build: gomodget format
 	export GO111MODULE=on 
-	pkger -o runtime/staticassets
 	env GOOS=linux go build -ldflags="-s -w" -o ./bin/mw-label-server ./cmds/mw-label-server/mw-label-server.go
 
 # NOTE: Add the `-test.v` flag for verbose logging.
@@ -19,6 +18,3 @@ gomodget:
 
 format:
 	go fmt ./...
-
-getpkger:
-	go get github.com/markbates/pkger/cmd/pkger
