@@ -1,23 +1,21 @@
 package staticassets
 
 import (
-	// "fmt"
+	"fmt"
+	"path/filepath"
 
 	"github.com/markbates/pkger"
 )
 
-func New() error {
-	return pkger.MkdirAll("/static", 0766)
+func Init() (string, error) {
+	if err := pkger.MkdirAll("/static", 0766); err != nil {
+		return "", fmt.Errorf("failed to make static directory: %w", err)
+	}
 
-	/*
-		info, err := pkger.Stat("/static/index.html")
-		if err != nil {
-			return err
-		}
-		fmt.Println("Name: ", info.Name())
-		fmt.Println("Size: ", info.Size())
-		fmt.Println("Mode: ", info.Mode())
-		fmt.Println("ModTime: ", info.ModTime())
-	*/
-	// return nil
+	i, err := pkger.Current()
+	if err != nil {
+		return "", fmt.Errorf("Unable to get info: %w", err)
+	}
+
+	return filepath.Join(i.Dir, "static"), nil
 }

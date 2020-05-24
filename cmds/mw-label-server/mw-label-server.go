@@ -30,15 +30,16 @@ func new() *client {
 }
 
 func (c *client) run() error {
-	if err := staticassets.New(); err != nil {
+	assetsDir, err := staticassets.Init()
+	if err != nil {
 		return fmt.Errorf("failed to get static assets: %w", err)
 	}
 
 	http.Handle("/api/print", print.BuildHandler())
-	http.Handle("/", staticfiles.BuildHandler())
+	http.Handle("/", staticfiles.BuildHandler(assetsDir))
 
 	fmt.Printf("Listening on port %v\n", *port)
-	err := http.ListenAndServe(fmt.Sprintf(":%v", *port), nil)
+	err = http.ListenAndServe(fmt.Sprintf(":%v", *port), nil)
 	if err != nil {
 		return fmt.Errorf("failed to start server on port %v: %w", *port, err)
 	}
