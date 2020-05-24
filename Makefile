@@ -1,4 +1,4 @@
-.PHONY: build clean gomodgen format
+.PHONY: build clean gomodgen format getpkger
 
 build: gomodget format
 	export GO111MODULE=on 
@@ -18,3 +18,6 @@ gomodget:
 
 format:
 	go fmt ./...
+
+getpkger:
+	go get github.com/markbates/pkger/cmd/pkger

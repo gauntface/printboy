@@ -4,9 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gauntface/miniworks-label-print-server/handlers/api/print"
 	"github.com/gauntface/miniworks-label-print-server/handlers/staticfiles"
+	"github.com/gauntface/miniworks-label-print-server/runtime/staticassets"
 )
 
 var (
@@ -15,7 +17,10 @@ var (
 
 func main() {
 	c := new()
-	c.run()
+	if err := c.run(); err != nil {
+		fmt.Printf("Run was not sucessful: %v\n", err)
+		os.Exit(1)
+	}
 }
 
 type client struct{}
@@ -25,6 +30,10 @@ func new() *client {
 }
 
 func (c *client) run() error {
+	if err := staticassets.New(); err != nil {
+		return fmt.Errorf("failed to get static assets: %w", err)
+	}
+
 	http.Handle("/api/print", print.BuildHandler())
 	http.Handle("/", staticfiles.BuildHandler())
 
