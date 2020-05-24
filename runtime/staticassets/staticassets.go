@@ -17,5 +17,7 @@ func Init() (string, error) {
 		return "", fmt.Errorf("Unable to get info: %w", err)
 	}
 
+	fmt.Printf("📂 pkger info: %+v\n", i)
+
 	return filepath.Join(i.Dir, "static"), nil
 }

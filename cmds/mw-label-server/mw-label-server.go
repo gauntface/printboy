@@ -35,6 +35,8 @@ func (c *client) run() error {
 		return fmt.Errorf("failed to get static assets: %w", err)
 	}
 
+	fmt.Printf("📂 Static Assets: %v\n", assetsDir)
+
 	http.Handle("/api/print", print.BuildHandler())
 	http.Handle("/", staticfiles.BuildHandler(assetsDir))
 
