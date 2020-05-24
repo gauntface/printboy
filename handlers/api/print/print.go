@@ -47,14 +47,14 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	// defer os.Remove(filepath)
 
 	args := []string{
-		// "-o PageSize=30252_Address",
-		// "-o PrintQuality=Graphics",
-		// "-o PrintDensity=Light",
-		"-d dymo_lw450t",
+		// "-o", "PageSize=30252_Address",
+		// "-o", "PrintQuality=Graphics",
+		// "-o", "PrintDensity=Light",
+		"-d", "dymo_lw450t",
 		filepath,
 	}
 
-	cmd := exec.Command("lp", strings.Join(args, " "))
+	cmd := exec.Command("lp", args...)
 	o, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("command: lp %v\n\ncommand output: %v\n\ncommand error: %v\n", strings.Join(args, " "), string(o), err)
