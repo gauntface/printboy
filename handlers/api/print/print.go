@@ -44,13 +44,18 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	}
 	// defer os.Remove(filepath)
 
+	// "-o", "PageSize=30252_Address",
+	// "-o", "PrintDensity=Light",
+	// "-o", "PrintQuality=Graphics",
 	args := []string{
-		// "-o", "PageSize=30252_Address",
-		// "-o", "PrintQuality=Graphics",
-		// "-o", "PrintDensity=Light",
 		"-d", "dymo_lw450t",
-		filepath,
 	}
+
+	if p.Copies > 1 {
+		args = append(args, "-n", fmt.Sprintf("%v", p.Copies))
+	}
+
+	args = append(args, filepath)
 
 	cmd := exec.Command("lp", args...)
 	o, err := cmd.CombinedOutput()
@@ -95,6 +100,7 @@ func writeFile(b64 string) (string, error) {
 }
 
 type payload struct {
+	Copies             int64
 	Base64EncodedImage string
 }
 

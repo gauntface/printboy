@@ -1,8 +1,11 @@
 .PHONY: build clean gomodgen format getpkger
 
-build: gomodget format
+build: gomodget build-offline
+
+build-offline: format
 	export GO111MODULE=on 
 	env GOOS=linux go build -ldflags="-s -w" -o ./bin/mw-label-server ./cmds/mw-label-server/mw-label-server.go
+
 
 # NOTE: Add the `-test.v` flag for verbose logging.
 test: build format

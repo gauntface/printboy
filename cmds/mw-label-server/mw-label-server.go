@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gauntface/miniworks-label-print-server/handlers/api/print"
+	"github.com/gauntface/miniworks-label-print-server/handlers/html/generatelabel"
 	"github.com/gauntface/miniworks-label-print-server/handlers/html/index"
 	"github.com/gauntface/miniworks-label-print-server/handlers/logoassets"
 	"github.com/gauntface/miniworks-label-print-server/handlers/staticfiles"
@@ -43,6 +44,7 @@ func (c *client) run() error {
 	http.Handle("/api/print", print.BuildHandler())
 	http.Handle("/static/", staticfiles.BuildHandler(assetsDir))
 	http.Handle(installassets.LogoAssetsRoute, logoassets.BuildHandler())
+	http.Handle("/generate-label", generatelabel.BuildHandler(assetsDir))
 	http.Handle("/", index.BuildHandler(assetsDir))
 
 	fmt.Printf("Listening on port %v\n", *port)

@@ -1,0 +1,9 @@
+.c-header {
+  background-color: var(--dark-blue);
+  color: var(--white);
+  padding: calc(var(--padding) * 4) calc(var(--padding) * 2);
+}
+
+.c-header a {
+  color: inherit;
+}

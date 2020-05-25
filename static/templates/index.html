@@ -1,39 +1,38 @@
 <html>
 <head>
-  <link href="/static/css/html/canvas.css" rel="stylesheet" /> 
-  <link href="/static/css/html/main.css" rel="stylesheet" /> 
-  <link href="/static/css/components/c-logo-grid.css" rel="stylesheet" /> 
-  <link href="/static/css/components/c-logo.css" rel="stylesheet" /> 
+  <link href="/static/css/pages/index.css" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
-<body>
-<main class="js-label-generator">
-<p><strong>Paper Size:</strong> ???</p>
+<body class="l-header-footer">
 
-<section>
-<h2>Select Logo </h2>
-<div class="c-logo-grid">
-{{ range .Logos }}
-  <div class="c-logo js-logo-btn">
-    <img class="c-logo__img js-logo-img" src="{{ .ImagePath }}" />
-    <p  class="c-logo__name">{{ .Name }}</p>
-  </div>
-{{ end }}
-</div>
-</section>
+{{ template "c-header" }}
 
-<section>
-  <canvas width="1050" height="337" class="js-label-canvas"></canvas>
-</section>
+<main class="l-header-footer__main">
+  <section class="l-section l-label-grid">
+    <div class="c-label-preview">
+      label 1
+    </div>
+    <div class="c-label-preview">
+      label 2
+    </div>
+    <div class="c-label-preview">
+      label 3
+    </div>
+    <div class="c-label-preview">
+      label 4
+    </div>
+  </section>
+
+  <div class="c-hr"><span class="c-hr__label">or</span></div>
+
+  <section class="l-section u-center">
+    <a href="/generate-label" class="c-button">Generate New Label</a>
+  </section>
+
 </main>
 
-<section>
-  <button class="js-print-btn">Print</button>
-</section>
+{{ template "c-footer" . }}
 
-<footer>
-  <p><a href="http://printboy.local:63">CUPs Admin Page</a></p>
-</footer>
-
-<script src="/static/js/js-label-generator.js" async defer ></script>
 </body>
 </html>

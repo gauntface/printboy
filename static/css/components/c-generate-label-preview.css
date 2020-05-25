@@ -1,0 +1,10 @@
+.c-generate-label-preview {
+  display: block;
+  margin: 0 auto;
+
+  max-width:100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--dark-blue);
+  background-color: #ffffff;
+}

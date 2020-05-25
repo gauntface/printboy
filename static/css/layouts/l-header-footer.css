@@ -1,0 +1,8 @@
+.l-header-footer {
+  display: flex;
+  flex-direction: column;
+}
+
+.l-header-footer__main {
+  flex: 1;
+}

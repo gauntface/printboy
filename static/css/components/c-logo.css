@@ -3,9 +3,13 @@
   cursor: pointer;
 }
 
-.c-logo__img {
+.c-logo__img, .c-logo_placeholder {
   width: 150px;
   height: 150px;
+  
+  text-align: center;
+  vertical-align: middle;
+  line-height: 150px;
 }
 
 .c-logo__name {

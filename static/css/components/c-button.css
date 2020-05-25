@@ -1,0 +1,10 @@
+.c-button {
+  display: inline-block;
+  padding: var(--padding);
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}

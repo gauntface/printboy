@@ -1,0 +1,22 @@
+.c-hr {
+  position: relative;
+  color: var(--blue);
+  text-align: center;
+  margin: var(--padding);
+}
+
+.c-hr__label {
+  position: relative;
+  padding: 0 var(--padding);
+  background-color: var(--white);
+}
+
+.c-hr::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--blue);
+}
