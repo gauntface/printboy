@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os/exec"
 	"strings"
+
+	"github.com/gauntface/miniworks-label-print-server/handlers/utils/errorresp"
 )
 
 func BuildHandler() http.Handler {
@@ -18,30 +20,26 @@ type handler struct{}
 
 func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("%q requests not supported", req.Method)))
+		errorresp.BadRequestString(res, fmt.Sprintf("%q requests not supported", req.Method))
 		return
 	}
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Unable to read request body: %v", err)))
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to read request body: %v", err))
 		return
 	}
 
 	var p payload
 	err = json.Unmarshal(body, &p)
 	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Unable to parse request body: %v", err)))
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to parse request body: %v", err))
 		return
 	}
 
 	filepath, err := writeFile(p.Base64EncodedImage)
 	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Unable to write img to tmp file: %v", err)))
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to write img to tmp file: %v", err))
 		return
 	}
 	// defer os.Remove(filepath)

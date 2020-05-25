@@ -1,48 +1,39 @@
 package index
 
 import (
-	"encoding/base64"
-	"io/ioutil"
+	"fmt"
+	"html/template"
 	"net/http"
-	"strings"
+	"path/filepath"
+
+	"github.com/gauntface/miniworks-label-print-server/handlers/utils/errorresp"
+	"github.com/gauntface/miniworks-label-print-server/runtime/installassets"
 )
 
-func BuildHandler() http.Handler {
-	return &handler{}
+func BuildHandler(assetsDir string) http.Handler {
+	return &handler{
+		assetsDir: assetsDir,
+	}
 }
 
-type handler struct{}
+type handler struct {
+	assetsDir string
+}
 
 func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	res.Write([]byte("Hi"))
-}
-
-func writeFile(b64 string) (string, error) {
-	b64 = strings.TrimPrefix(b64, "data:image/png;base64,")
-	dec, err := base64.StdEncoding.DecodeString(b64)
+	l, err := installassets.Logos()
 	if err != nil {
-		return "", err
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to get logos: %v", err))
+		return
 	}
 
-	f, err := ioutil.TempFile("", "mw-label.*.png")
-	if err != nil {
-		return "", err
+	data := PageData{
+		Logos: l,
 	}
-	defer f.Close()
-
-	if _, err := f.Write(dec); err != nil {
-		return "", err
-	}
-	if err := f.Sync(); err != nil {
-		return "", err
-	}
-	return f.Name(), nil
+	tmpl := template.Must(template.ParseFiles(filepath.Join(h.assetsDir, "templates", "index.html")))
+	tmpl.Execute(res, data)
 }
 
-type payload struct {
-	Base64EncodedImage string
-}
-
-type response struct {
-	Success bool
+type PageData struct {
+	Logos []installassets.Logo
 }
