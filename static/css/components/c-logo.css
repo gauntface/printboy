@@ -1,0 +1,13 @@
+.c-logo {
+  width: 150px;
+  cursor: pointer;
+}
+
+.c-logo__img {
+  width: 150px;
+  height: 150px;
+}
+
+.c-logo__name {
+  text-align: center;
+}
