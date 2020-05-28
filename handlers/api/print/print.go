@@ -57,6 +57,8 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 	args = append(args, filepath)
 
+	fmt.Printf("Running command: %q\n", strings.Join(append([]string{"lp"}, args...), " "))
+
 	cmd := exec.Command("lp", args...)
 	o, err := cmd.CombinedOutput()
 	if err != nil {
