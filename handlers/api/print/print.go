@@ -49,23 +49,25 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	// "-o", "PrintQuality=Graphics",
 	args := []string{
 		"-d", "dymo_lw450t",
+		filepath,
 	}
 
+	copies := 1
 	if p.Copies > 1 {
-		args = append(args, "-n", fmt.Sprintf("%v", p.Copies))
+		copies = p.Copies
 	}
 
-	args = append(args, filepath)
+	fmt.Printf("Running command: %q %v times\n", strings.Join(append([]string{"lp"}, args...), " "), copies)
 
-	fmt.Printf("Running command: %q\n", strings.Join(append([]string{"lp"}, args...), " "))
-
-	cmd := exec.Command("lp", args...)
-	o, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Printf("command: lp %v\n\ncommand output: %v\n\ncommand error: %v\n", strings.Join(args, " "), string(o), err)
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Unable to run print job.\nError: %v.\n\nOutput: %v", err, string(o))))
-		return
+	for i := 0; i < copies; i++ {
+		cmd := exec.Command("lp", args...)
+		o, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Printf("command: lp %v\n\ncommand output: %v\n\ncommand error: %v\n", strings.Join(args, " "), string(o), err)
+			res.WriteHeader(http.StatusBadRequest)
+			res.Write([]byte(fmt.Sprintf("Unable to run print job.\nError: %v.\n\nOutput: %v", err, string(o))))
+			return
+		}
 	}
 
 	v, err := json.Marshal(response{
@@ -102,7 +104,7 @@ func writeFile(b64 string) (string, error) {
 }
 
 type payload struct {
-	Copies             int64
+	Copies             int
 	Base64EncodedImage string
 }
 
