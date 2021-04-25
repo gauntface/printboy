@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/gauntface/miniworks-label-print-server/handlers/utils/errorresp"
+	"github.com/gauntface/miniworks-label-print-server/runtime/installassets"
 )
 
 func BuildHandler(assetsDir string) http.Handler {
@@ -20,7 +21,22 @@ type handler struct {
 }
 
 func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	data := PageData{}
+	l, err := installassets.Logos()
+	if err != nil {
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to get logos: %v", err))
+		return
+	}
+
+	cs, err := installassets.Contents()
+	if err != nil {
+		errorresp.BadRequestString(res, fmt.Sprintf("Unable to get contents: %v", err))
+		return
+	}
+
+	data := PageData{
+		Logos:    l,
+		Contents: cs,
+	}
 	tmpl, err := template.ParseFiles(
 		filepath.Join(h.assetsDir, "templates", "index.html"),
 		filepath.Join(h.assetsDir, "templates", "components", "c-header.html"),
@@ -41,4 +57,6 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 type PageData struct {
+	Logos    []string
+	Contents []installassets.Content
 }

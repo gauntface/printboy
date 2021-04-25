@@ -3,6 +3,7 @@ package installassets
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -42,39 +43,55 @@ func contentsDir() (string, error) {
 	return filepath.Join(id, contentsdirname), nil
 }
 
-func Logos() ([]Logo, error) {
+func Logos() ([]string, error) {
 	logoDir, err := LogosDir()
 	if err != nil {
 		return nil, err
 	}
 
-	files, err := filepath.Glob(logoDir + "/**/*.json")
+	files, err := filepath.Glob(logoDir + "/*")
 	if err != nil {
 		return nil, fmt.Errorf("unable to find logos: %w", err)
 	}
 
-	ls := []Logo{}
+	ls := []string{}
 	for _, f := range files {
-		c, err := ioutil.ReadFile(f)
-		if err != nil {
-			return nil, fmt.Errorf("failed to read %q: %w", f, err)
-		}
-
-		var l Logo
-		if err = json.Unmarshal(c, &l); err != nil {
-			return nil, fmt.Errorf("failed to parse %q: %w", f, err)
-		}
-
-		r, err := filepath.Rel(logoDir, filepath.Dir(f))
+		r, err := filepath.Rel(logoDir, f)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get relative path from logo directory to logo image %q: %w", f, err)
 		}
-		l.ImagePath = filepath.Join(LogoAssetsRoute, r, l.ImagePath)
-
-		ls = append(ls, l)
+		ls = append(ls, filepath.Join(LogoAssetsRoute, r))
 	}
 
 	return ls, nil
+}
+
+func SaveLogo(fn string, file io.Reader) error {
+	logoDir, err := LogosDir()
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(logoDir, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	p := filepath.Join(logoDir, fn)
+
+	// Create file
+	dst, err := os.Create(p)
+	defer dst.Close()
+	if err != nil {
+		return err
+	}
+
+	// Copy the uploaded file to the created file on the filesystem
+	if _, err := io.Copy(dst, file); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func Contents() ([]Content, error) {
@@ -104,12 +121,6 @@ func Contents() ([]Content, error) {
 	}
 
 	return cs, nil
-}
-
-type Logo struct {
-	ID        string
-	Name      string
-	ImagePath string
 }
 
 type Content struct {

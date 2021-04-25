@@ -52,6 +52,6 @@ func (h handler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 type PageData struct {
 	Title    string
-	Logos    []installassets.Logo
+	Logos    []string
 	Contents []installassets.Content
 }

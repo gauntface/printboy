@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gauntface/miniworks-label-print-server/handlers/api/print"
+	"github.com/gauntface/miniworks-label-print-server/handlers/api/uploadlogo"
 	"github.com/gauntface/miniworks-label-print-server/handlers/html/generatelabel"
 	"github.com/gauntface/miniworks-label-print-server/handlers/html/index"
 	"github.com/gauntface/miniworks-label-print-server/handlers/logoassets"
@@ -42,6 +43,7 @@ func (c *client) run() error {
 	fmt.Printf("📂 Static Assets: %v\n", assetsDir)
 
 	http.Handle("/api/print", print.BuildHandler())
+	http.Handle("/api/upload-logo", uploadlogo.BuildHandler())
 	http.Handle("/static/", staticfiles.BuildHandler(assetsDir))
 	http.Handle(installassets.LogoAssetsRoute, logoassets.BuildHandler())
 	http.Handle("/generate-label", generatelabel.BuildHandler(assetsDir))

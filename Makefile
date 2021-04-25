@@ -21,3 +21,6 @@ gomodget:
 
 format:
 	go fmt ./...
+
+server: build
+	./bin/mw-label-server
