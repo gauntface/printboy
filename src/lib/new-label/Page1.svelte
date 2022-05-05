@@ -26,12 +26,19 @@
     <div class="l-imgradios">
       {#each imageOptions as imgOpt}
         <div class="c-imgradio">
-          <input type="radio" name="labelimage" id={imgOpt.id} value={imgOpt.id}>
+          <input type="radio" name="labelimage" id={imgOpt.id} value={imgOpt.id} checked={initialValues.labelimage == imgOpt.id}>
           <label for={imgOpt.id} style="background-image: url(/labelimages/{imgOpt.id}.svg)">{imgOpt.title}</label>
         </div>
       {/each}
     </div>
-    <button type=submit>Next page</button>
+    <p class="c-formhr"><i>or</i></p>
+    <p><label for="uploadlabelimage">Upload a new label:</label></p>
+
+    <p><input type="file"
+          id="uploadlabelimage" name="uploadlabelimage"
+          accept="image/png, image/jpeg, image/svg"></p>
+    <br />
+    <p><button type=submit>Next page</button></p>
   </form>
 </div>
 
@@ -60,5 +67,16 @@
 
   .c-imgradio input {
     display: none;
+  }
+
+  .c-formhr {
+    text-align: center;
+  }
+
+  input[type="radio"]:checked + label {
+    border-style: solid;
+    border-width: 4px;
+    border-color: var(--accent-color);
+    border-radius: 8px;
   }
 </style>
