@@ -10,24 +10,23 @@
 	// (i.e. we came here from elsewhere in the app), use it
 	export const router = browser;
 
-	// since there's no dynamic data here, we can prerender
-	// it so that it gets served as a static asset in prod
+	// serve as a static asset in prod
 	export const prerender = true;
 </script>
 
 <script>
-	import Page1 from '$lib/new-label/Page1.svelte';
+  import Page1 from '$lib/new-label/Page1.svelte';
   import Page2 from '$lib/new-label/Page2.svelte';
   import Page3 from '$lib/new-label/Page3.svelte';
   import Page4 from '$lib/new-label/Page4.svelte';
+
+  export let labelPresets;
 
   const pages = [Page1, Page2, Page3, Page4];
   let page = 0;
   let pageState = {};
 
   function updateValues(form) {
-    console.log(`Hello Matt?`, form);
-
     const data = new FormData(form);
 
     for (const k of data.keys()) {
@@ -53,9 +52,6 @@
       return;
     }
 
-    // TODO Update pageState
-    console.log(`Page State: `, pageState);
-
     page += 1;
   }
 
@@ -65,8 +61,6 @@
     }
 
     updateValues(form);
-
-    console.log(`Page State: `, pageState);
 
     page -= 1;
   }
@@ -82,6 +76,7 @@
 
   <svelte:component
   this={pages[page]}
+  {labelPresets}
   {onSubmit}
   {onBack}
   initialValues={pageState}

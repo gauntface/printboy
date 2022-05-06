@@ -1,37 +1,31 @@
 <script>
 	export let initialValues;
 	export let onSubmit;
-	export let onBack;
-
-  const imageOptions = [
-    {
-      id: 'mashley',
-      title: 'Mashley',
-    },
-    {
-      id: 'miniworks',
-      title: 'Miniworks',
-    },
-    {
-      id: 'gauntdev',
-      title: 'gaunt.dev',
-    },
-  ];
+  export let onBack;
+  export let labelPresets;
 </script>
 
 <div>
-  <p>Please select an image for use with your label:</p>
+  <p>Please select or upload an image for use with your label or select next to create a label without an image:</p>
 
   <form method="post" on:submit={onSubmit}>
-    <div class="l-imgradios">
-      {#each imageOptions as imgOpt}
+
+    {#if labelPresets && labelPresets.images && labelPresets.images.length}
+      <div class="l-imgradios">
         <div class="c-imgradio">
-          <input type="radio" name="labelimage" id={imgOpt.id} value={imgOpt.id} checked={initialValues.labelimage == imgOpt.id}>
-          <label for={imgOpt.id} style="background-image: url(/labelimages/{imgOpt.id}.svg)">{imgOpt.title}</label>
+          <input type="radio" name="labelimage" id="blank" value="">
+          <label for="blank">No Image</label>
         </div>
-      {/each}
-    </div>
-    <p class="c-formhr"><i>or</i></p>
+        {#each labelPresets.images as imgOpt}
+          <div class="c-imgradio">
+            <input type="radio" name="labelimage" id={imgOpt.filename} value={imgOpt.filename} checked={initialValues.labelimage == imgOpt.filename}>
+            <label for={imgOpt.filename} style="background-image: url({imgOpt.base64})">{imgOpt.filename}</label>
+          </div>
+        {/each}
+      </div>
+      <p class="c-formhr"><i>or</i></p>
+    {/if}
+
     <p><label for="uploadlabelimage">Upload a new label:</label></p>
 
     <p><input type="file"
@@ -45,7 +39,7 @@
 <style>
   .l-imgradios {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
   .c-imgradio {
@@ -57,12 +51,16 @@
 
   .c-imgradio label {
     display: inline-block;
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    min-height: 150px;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     text-indent: -9999px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: transparent;
+    border-radius: 8px;
   }
 
   .c-imgradio input {
@@ -74,9 +72,6 @@
   }
 
   input[type="radio"]:checked + label {
-    border-style: solid;
-    border-width: 4px;
     border-color: var(--accent-color);
-    border-radius: 8px;
   }
 </style>

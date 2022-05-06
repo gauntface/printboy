@@ -15,6 +15,9 @@
 			<li class:active={$page.url.pathname === '/multiple-labels'}>
 				<a sveltekit:prefetch href="/multiple-labels">Multiple Labels</a>
 			</li>
+			<li class:active={$page.url.pathname === '/settings'}>
+				<a sveltekit:prefetch href="/settings">Settings</a>
+			</li>
 		</ul>
 	</nav>
 </header>

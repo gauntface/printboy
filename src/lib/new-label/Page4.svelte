@@ -1,7 +1,8 @@
 <script>
-  export let initialValues;
+	export let initialValues;
 	export let onSubmit;
-	export let onBack;
+  export let onBack;
+  export let labelPresets;
 </script>
 
 <div>
