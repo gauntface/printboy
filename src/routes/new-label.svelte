@@ -19,10 +19,11 @@
   import Page2 from '$lib/new-label/Page2.svelte';
   import Page3 from '$lib/new-label/Page3.svelte';
   import Page4 from '$lib/new-label/Page4.svelte';
+  import PagePreview from '$lib/new-label/PagePreview.svelte';
 
   export let labelPresets;
 
-  const pages = [Page1, Page2, Page3, Page4];
+  const pages = [Page1, Page2, Page3, PagePreview, Page4];
   let page = 0;
   let pageState = {};
 

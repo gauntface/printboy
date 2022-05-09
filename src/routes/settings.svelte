@@ -32,6 +32,44 @@
 			}
 		}
 	}
+
+	async function submitName(e) {
+		e.preventDefault();
+		const data = new FormData(e.target);
+		const names = data.getAll("name");
+		for (const n of names) {
+			try {
+					await fetch(`/presets/add-name`, {
+						method: 'POST',
+						body: JSON.stringify({
+							name: n,
+						}),
+					});
+					window.location.reload();
+				} catch (err) {
+					console.error(`Failed to add name: `, err);
+				}
+		}
+	}
+
+	async function submitAddress(e) {
+		e.preventDefault();
+		const data = new FormData(e.target);
+		const addresses = data.getAll("address");
+		for (const a of addresses) {
+			try {
+				await fetch(`/presets/add-address`, {
+					method: 'POST',
+					body: JSON.stringify({
+						address: a,
+					}),
+				});
+				window.location.reload();
+			} catch (err) {
+				console.error(`Failed to add address: `, err);
+			}
+		}
+	}
 </script>
 
 <svelte:head>
@@ -60,7 +98,37 @@
 	</section>
 
 	<section>
-		<h2>Preset Text</h2>
+		<h2>Preset Names</h2>
+
+		<ul class="l-labelimages">
+			{#each labelPresets.names as name}
+				<li><pre>{name}</pre></li>
+			{/each}
+		</ul>
+
+		<h3>Add new name</h3>
+
+		<form method="post" on:submit={submitName}>
+			<input type="text" name="name">
+			<button type="submit">Add name</button>
+		</form>
+	</section>
+
+	<section>
+		<h2>Preset addresses</h2>
+
+		<ul class="l-labelimages">
+			{#each labelPresets.addresses as addr}
+				<li><pre>{addr}</pre></li>
+			{/each}
+		</ul>
+
+		<h3>Add new address</h3>
+
+		<form method="post" on:submit={submitAddress}>
+			<textarea rows=7 cols=80 name="address"></textarea>
+			<button type="submit">Add address</button>
+		</form>
 	</section>
 	</main>
 </div>

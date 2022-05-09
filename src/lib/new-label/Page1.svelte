@@ -18,7 +18,7 @@
         </div>
         {#each labelPresets.images as imgOpt}
           <div class="c-imgradio">
-            <input type="radio" name="labelimage" id={imgOpt.filename} value={imgOpt.filename} checked={initialValues.labelimage == imgOpt.filename}>
+            <input type="radio" name="labelimage" id={imgOpt.filename} value={imgOpt.base64} checked={initialValues.labelimage == imgOpt.filename}>
             <label for={imgOpt.filename} style="background-image: url({imgOpt.base64})">{imgOpt.filename}</label>
           </div>
         {/each}

@@ -6,22 +6,34 @@
 </script>
 
 <div>
-  <p>Does look good?</p>
+  <p>Please select an image for use with your label:</p>
 
-  <div>
-    TODO: Matt you need to show a demo of the label
-  </div>
+  <form class="js-page2-form" method="post" on:submit={onSubmit}>
+    {#if labelPresets && labelPresets.addresses && labelPresets.addresses.length}
+      <ul class="l-nameradios">
+        <li class="c-nameradio">
+          <input type="radio" name="labeladdress" id="blank" value="*Blank*">
+          <label for="blank"><pre>No Address</pre></label>
+        </li>
+        {#each labelPresets.addresses as addrOpt}
+        <li class="c-nameradio">
+            <input type="radio" name="labeladdress" id={addrOpt} value={addrOpt} checked={initialValues.labelname == addrOpt}>
+            <label for={addrOpt}><pre>{addrOpt}</pre></label>
+        </li>
+        {/each}
+      </ul>
+      <p class="c-formhr"><i>or</i></p>
+    {/if}
 
-  <form class="js-page3-form" method="post" on:submit={onSubmit}>
     <div>
-      <label for=copies>Copies</label>
+      <label for=address>Enter a new address (or Text)</label>
       <br/>
-      <input id=copies name=copies type=number value={initialValues.copies ? initialValues.copies : '1'}>
+      <textarea id=address name=address rows=6>{initialValues.address ? initialValues.address : ''}</textarea>
     </div>
 
     <div>
       <button type=button on:click={() => onBack(document.querySelector('.js-page2-form'))}>Previous page</button>
-      <button type=submit>Print Label</button>
+      <button type=submit>Next page</button>
     </div>
   </form>
 </div>
