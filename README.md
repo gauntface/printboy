@@ -29,9 +29,14 @@ A lot of this is from these articles:
 1. Install the printer
     1. **IMPORTANT**: Use `DYMO_LabelWriter_450_Turbo` for the printer
        name, otherwise `printboy` will no work.
-    1. Label sizes are use are `1-1/8" x 3"` "Mailing Address Labels" or `2-1/4" x 4"` "Name Badge Labels"
+    1. Label sizes are use are:
+      - **30252 Address:** `1-1/8" x 3"`
+      - **30364 Name Badge:** `2-1/4" x 4"` "Name Badge Labels"
 1. Run a test print
 
 ### Install printboy
+
+1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
+
 
 // TODO
