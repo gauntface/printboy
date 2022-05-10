@@ -8,7 +8,7 @@
 <div>
   <p>Please select an image for use with your label:</p>
 
-  <form class="js-page2-form" method="post" on:submit={onSubmit}>
+  <form class="js-form" method="post" on:submit={onSubmit}>
     {#if labelPresets && labelPresets.names && labelPresets.names.length}
       <ul class="l-nameradios">
         <li class="c-nameradio">
@@ -32,7 +32,7 @@
     </div>
 
     <div>
-      <button type=button on:click={() => onBack(document.querySelector('.js-page2-form'))}>Previous page</button>
+      <button type=button on:click={() => onBack(document.querySelector('.js-form'))}>Previous page</button>
       <button type=submit>Next page</button>
     </div>
   </form>

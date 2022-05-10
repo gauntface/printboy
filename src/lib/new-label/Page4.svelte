@@ -8,7 +8,7 @@
 <div>
   <p>Printing {initialValues.copies} copies of your label.</p>
 
-  <form class="js-page3-form" method="post" on:submit={onSubmit}>
+  <form class="js-form" method="post" on:submit={onSubmit}>
     <div>
       <p>Would you like to save this label?</p>
       <label>
@@ -22,6 +22,7 @@
     </div>
 
     <div>
+      <button type=button on:click={() => onBack(document.querySelector('.js-form'))}>Previous page</button>
       <button type=submit>Done</button>
     </div>
   </form>

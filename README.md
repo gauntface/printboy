@@ -1,38 +1,37 @@
-# create-svelte
+# Printboy
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A simple service to print labels.
 
-## Creating a project
+This is built for personal use case of easily printing return
+labels from a Raspberry Pi but there is no reason it couldn't
+be altered and improved for your use-cases.
 
-If you're seeing this, you've probably already done this step. Congrats!
+It works by "generating" a label on a HTML canvas which is saved
+as a png and then printed via an `lp` command.
 
-```bash
-# create a new project in the current directory
-npm init svelte
+## Setup
 
-# create a new project in my-app
-npm init svelte my-app
-```
+### Print install
 
-## Developing
+The first thing to do is ensure the printer works via CUPs.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+A lot of this is from these articles:
+- https://www.baitando.com/it/2017/12/12/install-dymo-labelwriter-on-headless-linux
+- https://www.taklischris.info/other/use-your-dymo-printer-on-ubuntu
 
-```bash
-npm run dev
+1. Install CUPs `sudo apt-get install cups cups-client printer-driver-dymo` or `sudo dnf install cups-deve;`
+1. Get printer definition
+    1. `git clone https://github.com/matthiasbock/dymo-cups-drivers.git`
+    1. `sudo mkdir -p /usr/share/cups/model`
+    1. `sudo cp dymo-cups-drivers/ppd/lw450.ppd /usr/share/cups/model/`
+1. Go to CUPs admin page [http://localhost:631](http://localhost:631)
+    1. Use your computer login credentials for the username and password for the site
+1. Install the printer
+    1. **IMPORTANT**: Use `DYMO_LabelWriter_450_Turbo` for the printer
+       name, otherwise `printboy` will no work.
+    1. Label sizes are use are `1-1/8" x 3"` "Mailing Address Labels" or `2-1/4" x 4"` "Name Badge Labels"
+1. Run a test print
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### Install printboy
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+// TODO
