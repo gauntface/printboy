@@ -7,50 +7,10 @@
 </script>
 
 <script>
+	import LabelImages from '../lib/settings/LabelImages.svelte';
+	import LabelTitles from '../lib/settings/LabelTitles.svelte';
+
 	export let labelPresets;
-
-	function uploadImage(e) {
-		e.preventDefault();
-		const data = new FormData(e.target);
-		const images = data.getAll("uploadImage");
-		for (const img of images) {
-			let reader = new FileReader();
-			reader.readAsDataURL(img);
-			reader.onload = async (e) => {
-				try {
-					await fetch(`/presets/upload-image`, {
-						method: 'POST',
-						body: JSON.stringify({
-							filename: img.name,
-							base64: e.target.result,
-						}),
-					});
-					window.location.reload();
-				} catch (err) {
-					console.error(`Failed to upload image: `, err);
-				}
-			}
-		}
-	}
-
-	async function submitName(e) {
-		e.preventDefault();
-		const data = new FormData(e.target);
-		const names = data.getAll("name");
-		for (const n of names) {
-			try {
-					await fetch(`/presets/add-name`, {
-						method: 'POST',
-						body: JSON.stringify({
-							name: n,
-						}),
-					});
-					window.location.reload();
-				} catch (err) {
-					console.error(`Failed to add name: `, err);
-				}
-		}
-	}
 
 	async function submitAddress(e) {
 		e.preventDefault();
@@ -82,36 +42,12 @@
 	<main>
 	<section>
 		<h2>Preset Images</h2>
-
-		<div class="l-labelimages">
-			{#each labelPresets.images as imgOpt}
-				<img src={imgOpt.base64} alt={imgOpt.filename} />
-			{/each}
-		</div>
-
-		<h3>Upload new image</h3>
-
-		<form method="post" on:submit={uploadImage}>
-			<input type="file" name="uploadImage">
-			<button type="submit">Upload</button>
-		</form>
+		<LabelImages labelPresets={labelPresets}></LabelImages>
 	</section>
 
 	<section>
-		<h2>Preset Names</h2>
-
-		<ul class="l-labelimages">
-			{#each labelPresets.names as name}
-				<li><pre>{name}</pre></li>
-			{/each}
-		</ul>
-
-		<h3>Add new name</h3>
-
-		<form method="post" on:submit={submitName}>
-			<input type="text" name="name">
-			<button type="submit">Add name</button>
-		</form>
+		<h2>Preset Titles</h2>
+		<LabelTitles labelPresets={labelPresets}></LabelTitles>
 	</section>
 
 	<section>
@@ -144,17 +80,5 @@
 		display: flex;
 		flex-direction: column;
 		gap: 64px;
-	}
-
-	.l-labelimages {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		gap: 24px;
-	}
-
-	.l-labelimages > img {
-		width: 150px;
-		height: 150px;
 	}
 </style>
