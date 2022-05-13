@@ -1,9 +1,10 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
+import crypto from 'crypto';
 
 export const imageDir = path.join(os.homedir(), '.printboy', 'labels', 'images');
-export const nameDir = path.join(os.homedir(), '.printboy', 'labels', 'names');
+export const titlesDir = path.join(os.homedir(), '.printboy', 'labels', 'titles');
 export const addressDir = path.join(os.homedir(), '.printboy', 'labels', 'addresses');
 
 function getPresetImages() {
@@ -44,7 +45,10 @@ function readTextFiles(dir) {
   const files = fs.readdirSync(dir);
   for (const filename of files) {
     const filepath = path.join(dir, filename);
-    values.push(fs.readFileSync(filepath).toString());
+    values.push({
+      filename,
+      text: fs.readFileSync(filepath).toString(),
+    });
   }
   return values
 }
@@ -52,7 +56,21 @@ function readTextFiles(dir) {
 export function getLabelPresets() {
   return {
     images: getPresetImages(),
-    names: readTextFiles(nameDir),
+    titles: readTextFiles(titlesDir),
     addresses: readTextFiles(addressDir),
   };
+}
+
+function hashForValue(v) {
+  const shasum = crypto.createHash('sha1')
+  shasum.update(v)
+  return shasum.digest('hex');
+}
+
+export async function saveTextFile(dir, value) {
+  const filename = `${hashForValue(value)}.txt`;
+  fs.mkdirSync(dir, {
+    recursive: true,
+  });
+  fs.writeFileSync(path.join(dir, filename), value);
 }

@@ -9,27 +9,9 @@
 <script>
 	import LabelImages from '../lib/settings/LabelImages.svelte';
 	import LabelTitles from '../lib/settings/LabelTitles.svelte';
+	import LabelAddresses from '../lib/settings/LabelAddresses.svelte';
 
 	export let labelPresets;
-
-	async function submitAddress(e) {
-		e.preventDefault();
-		const data = new FormData(e.target);
-		const addresses = data.getAll("address");
-		for (const a of addresses) {
-			try {
-				await fetch(`/presets/add-address`, {
-					method: 'POST',
-					body: JSON.stringify({
-						address: a,
-					}),
-				});
-				window.location.reload();
-			} catch (err) {
-				console.error(`Failed to add address: `, err);
-			}
-		}
-	}
 </script>
 
 <svelte:head>
@@ -42,29 +24,17 @@
 	<main>
 	<section>
 		<h2>Preset Images</h2>
-		<LabelImages labelPresets={labelPresets}></LabelImages>
+		<LabelImages images={labelPresets.images}></LabelImages>
 	</section>
 
 	<section>
 		<h2>Preset Titles</h2>
-		<LabelTitles labelPresets={labelPresets}></LabelTitles>
+		<LabelTitles titles={labelPresets.titles}></LabelTitles>
 	</section>
 
 	<section>
 		<h2>Preset addresses</h2>
-
-		<ul class="l-labelimages">
-			{#each labelPresets.addresses as addr}
-				<li><pre>{addr}</pre></li>
-			{/each}
-		</ul>
-
-		<h3>Add new address</h3>
-
-		<form method="post" on:submit={submitAddress}>
-			<textarea rows=7 cols=80 name="address"></textarea>
-			<button type="submit">Add address</button>
-		</form>
+		<LabelAddresses addresses={labelPresets.addresses}></LabelAddresses>
 	</section>
 	</main>
 </div>
