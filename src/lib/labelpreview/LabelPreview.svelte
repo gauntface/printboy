@@ -202,10 +202,6 @@
 </script>
 <div>
   <p>Label Preview TBD</p>
-  <div>
-    <p style="font-weight:700;">{values.labelname}</p>
-    <p style="font-weight: 500;">{values.labeladdress}</p>
-  </div>
 	<canvas class="c-label-preview js-label-canvas" width="1050" height="337"></canvas>
 </div>
 
