@@ -18,12 +18,11 @@
   import Page1 from '$lib/new-label/Page1.svelte';
   import Page2 from '$lib/new-label/Page2.svelte';
   import Page3 from '$lib/new-label/Page3.svelte';
-  import Page4 from '$lib/new-label/Page4.svelte';
   import PagePreview from '$lib/new-label/PagePreview.svelte';
 
   export let labelPresets;
 
-  const pages = [Page1, Page2, Page3, PagePreview, Page4];
+  const pages = [Page1, Page2, Page3, PagePreview];
   let page = 0;
   let pageState = {};
 
@@ -40,6 +39,7 @@
       }
       pageState[k] = v;
     }
+    console.log(pageState);
   }
 
   function onSubmit(e) {

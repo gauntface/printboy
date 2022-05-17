@@ -34,7 +34,7 @@
 </script>
 
 <div>
-  <p>Does this look good?</p>
+  <p>Print you label if it looks good.</p>
 
   <LabelPreview bind:canvas={canvas} values={initialValues}></LabelPreview>
 

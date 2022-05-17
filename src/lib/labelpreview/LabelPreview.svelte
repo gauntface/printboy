@@ -12,7 +12,7 @@
         throw new Error("Could not find canvas")
       }
       canvas = c;
-      console.log(`Canvas Set => `, canvas);
+      console.log(`Canvas Set => `, canvas, values);
       this.canvas = c;
       this.context = c.getContext('2d');
     }
@@ -33,9 +33,9 @@
       }
 
       let y = placement.contentsTop;
-      if (values.labelname) {
+      if (values.labeltitle) {
         this.context.font = this.fontString(700, placement.fontSize, 'Roboto');
-        this.context.fillText(values.labelname, placement.contentsLeft, y + placement.fontAscent);
+        this.context.fillText(values.labeltitle, placement.contentsLeft, y + placement.fontAscent);
         y += placement.fontAscent + placement.fontDescent;
       }
 
@@ -191,6 +191,9 @@
       i.onload = () => {
         resolve(i);
       }
+      i.onerror = () => {
+        resolve(null);
+      }
       i.src = b64;
     });
   }
@@ -210,5 +213,6 @@
     border-style: solid;
     border-width: 4px;
     border-color: grey;
+    width: 100%;
   }
 </style>

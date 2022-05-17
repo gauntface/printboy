@@ -6,19 +6,20 @@
 </script>
 
 <div>
-  <p>Please select an image for use with your label:</p>
+  <p>Please select or enter a title for the label (this will be the first line
+    on the label and will be in bold):</p>
 
   <form class="js-form" method="post" on:submit={onSubmit}>
-    {#if labelPresets && labelPresets.names && labelPresets.names.length}
-      <ul class="l-nameradios">
-        <li class="c-nameradio">
-          <input type="radio" name="labelname" id="blank" value="*Blank*">
+    {#if labelPresets && labelPresets.titles && labelPresets.titles.length}
+      <ul class="l-titleradios">
+        <li class="c-titleradio">
+          <input type="radio" name="labeltitle" id="blank" value="">
           <label for="blank">No Name</label>
         </li>
-        {#each labelPresets.names as nameOpt}
-        <li class="c-nameradio">
-            <input type="radio" name="labelname" id={nameOpt} value={nameOpt} checked={initialValues.labelname == nameOpt}>
-            <label for={nameOpt}>{nameOpt}</label>
+        {#each labelPresets.titles as titleOpt}
+        <li class="c-titleradio">
+            <input type="radio" name="labeltitle" id={titleOpt.filename} value={titleOpt.text} checked={initialValues.labeltitle == titleOpt}>
+            <label for={titleOpt.filename}>{titleOpt.text}</label>
         </li>
         {/each}
       </ul>
@@ -26,9 +27,9 @@
     {/if}
 
     <div>
-      <label for=name>Enter a new name</label>
+      <label for=customtitle>Enter a new title</label>
       <br/>
-      <input id=name name=name value={initialValues.name ? initialValues.name : ''}>
+      <input id=customtitle name=labeltitle value={initialValues.labeltitle ? initialValues.labeltitle : ''}>
     </div>
 
     <div>
@@ -43,5 +44,11 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  .l-titleradios {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 </style>
