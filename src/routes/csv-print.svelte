@@ -15,13 +15,14 @@
 </script>
 
 <script>
-  let labels = [];
+  let labelGroups = [];
+  let labelGroupSize = 2 * 3;
   let width = 4;
   let height = 2.25;
 
   function onSubmit(e) {
     e.preventDefault();
-    labels = [];
+    labelGroups = [];
 		const data = new FormData(e.target);
 		const csvFields = data.getAll("csv");
     for (const cf of csvFields) {
@@ -33,7 +34,13 @@
           body: e.target.result,
         });
         const records = await resp.json();
+        let group = [];
         for (const row of records) {
+          if (group.length >= labelGroupSize) {
+            labelGroups.push(group);
+            group = [];
+          }
+
           const img = row[0];
           const title = row[1];
           const address = row[2];
@@ -43,15 +50,43 @@
             continue;
           }
 
-          labels.push({
+          group.push({
             labelimage: img.trim(),
             labeltitle: title.trim(),
             labeladdress: address.trim(),
           });
         }
-        labels = labels;
+        labelGroups.push(group);
+        labelGroups = labelGroups;
 			}
     }
+  }
+
+  async function printBatch(e, groupSelector) {
+    e.preventDefault();
+    e.target.disabled = true;
+    console.log(`Print batch`, e, groupSelector);
+
+    const labels = document.querySelectorAll(`.${groupSelector} canvas`);
+
+    for (const c of labels) {
+      try {
+        const resp = await fetch('/api/print', {
+          method: 'post',
+          body: JSON.stringify({
+            copies: 1,
+            base64: c.toDataURL(),
+            widthInches: width,
+            heightInches: height,
+          }),
+        })
+        console.log('Print resp: ', await resp.text())
+      } catch (err) {
+        console.error('Failed to print: ', err);
+      }
+    }
+
+    e.target.disabled = false;
   }
 </script>
 
@@ -69,11 +104,15 @@
     <button type="submit">Submit</button>
   </form>
 
-  <section class="l-labelpreviews">
-    {#each labels as label}
-      <LabelPreview values={label} widthInches={width} heightInches={height}></LabelPreview>
+
+    {#each labelGroups as group, i}
+      <section class="l-labelpreviews js-label-group-{i}">
+      {#each group as label}
+        <LabelPreview values={label} widthInches={width} heightInches={height}></LabelPreview>
+      {/each}
+      </section>
+      <p><button on:click={(e) => printBatch(e, `js-label-group-${i}`)}>Print</button></p>
     {/each}
-  </section>
 </div>
 
 <style>

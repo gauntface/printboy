@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
 
   export let values;
-  export let canvas;
   export let widthInches;
   export let heightInches;
+
+  let canvas;
 
   class LabelGenerator {
     constructor(c) {
