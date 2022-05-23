@@ -10,11 +10,6 @@
   class LabelGenerator {
     constructor(c) {
       this.canvas = c;
-      // 30252 Address Label
-      // 3-1/2" x 1-1/8"
-
-      // 30364 Name Badge
-      // 4" x 2.25"
       this.canvas.width = Math.floor(widthInches * 300);
       this.canvas.height = Math.floor(heightInches * 300);
       this.context = c.getContext('2d');

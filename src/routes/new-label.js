@@ -1,9 +1,10 @@
-import { getLabelPresets } from '../lib/constants.js';
+import { getLabelPresets, getCurrentSize } from '../lib/constants.js';
 
-export function get() {
+export async function get() {
   return {
     body: {
       labelPresets: getLabelPresets(),
+      currentSize: await getCurrentSize(),
     }
   };
 }

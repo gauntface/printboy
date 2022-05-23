@@ -8,8 +8,13 @@
 	import LabelImages from '../lib/settings/LabelImages.svelte';
 	import LabelTitles from '../lib/settings/LabelTitles.svelte';
 	import LabelAddresses from '../lib/settings/LabelAddresses.svelte';
+	import LabelSize from '../lib/settings/LabelSize.svelte';
 
 	export let labelPresets;
+	export let supportedSizes;
+	export let currentSize;
+
+	console.log(`Current Size => `, currentSize);
 </script>
 
 <svelte:head>
@@ -31,8 +36,13 @@
 	</section>
 
 	<section>
-		<h2>Preset addresses</h2>
+		<h2>Preset Addresses</h2>
 		<LabelAddresses addresses={labelPresets.addresses}></LabelAddresses>
+	</section>
+
+	<section>
+		<h2>Label Size</h2>
+		<LabelSize sizes={supportedSizes} currentSize={currentSize}></LabelSize>
 	</section>
 	</main>
 </div>

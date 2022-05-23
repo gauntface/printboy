@@ -12,6 +12,7 @@
   import PagePreview from '$lib/new-label/PagePreview.svelte';
 
   export let labelPresets;
+  export let currentSize;
 
   const pages = [Page1, Page2, Page3, PagePreview];
   let page = 0;
@@ -69,6 +70,8 @@
   {labelPresets}
   {onSubmit}
   {onBack}
+  widthInches={currentSize.widthInches}
+  heightInches={currentSize.heightInches}
   initialValues={pageState}
   />
 </div>

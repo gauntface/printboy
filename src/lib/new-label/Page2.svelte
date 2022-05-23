@@ -3,6 +3,8 @@
 	export let onSubmit;
   export let onBack;
   export let labelPresets;
+  export let widthInches;
+  export let heightInches;
 </script>
 
 <div>

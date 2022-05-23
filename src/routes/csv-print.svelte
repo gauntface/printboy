@@ -8,8 +8,8 @@
 <script>
   let labelGroups = [];
   let labelGroupSize = 2 * 3;
-  let width = 4;
-  let height = 2.25;
+  export let widthInches;
+  export let heightInches;
 
   function onSubmit(e) {
     e.preventDefault();
@@ -66,8 +66,8 @@
           body: JSON.stringify({
             copies: 1,
             base64: c.toDataURL(),
-            widthInches: width,
-            heightInches: height,
+            widthInches: widthInches,
+            heightInches: heightInches,
           }),
         })
       } catch (err) {

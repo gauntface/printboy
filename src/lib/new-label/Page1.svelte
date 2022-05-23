@@ -3,6 +3,11 @@
 	export let onSubmit;
   export let onBack;
   export let labelPresets;
+  export let widthInches;
+  export let heightInches;
+
+  console.log(`widthInches `, widthInches, heightInches);
+  console.log(`initialValues `, initialValues);
 </script>
 
 <div>
