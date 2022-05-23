@@ -1,5 +1,5 @@
 <script context="module">
-	import { browser, dev } from '$app/env';
+	import { browser } from '$app/env';
   import LabelPreview from '../lib/labelpreview/LabelPreview.svelte';
 
 	export const router = browser;
@@ -8,8 +8,7 @@
 <script>
   let labelGroups = [];
   let labelGroupSize = 2 * 3;
-  export let widthInches;
-  export let heightInches;
+  export let currentSize;
 
   function onSubmit(e) {
     e.preventDefault();
@@ -66,8 +65,8 @@
           body: JSON.stringify({
             copies: 1,
             base64: c.toDataURL(),
-            widthInches: widthInches,
-            heightInches: heightInches,
+            widthInches: currentSize.widthInches,
+            heightInches: currentSize.heightInches,
           }),
         })
       } catch (err) {
@@ -97,7 +96,7 @@
     {#each labelGroups as group, i}
       <section class="l-labelpreviews js-label-group-{i}">
       {#each group as label}
-        <LabelPreview values={label} widthInches={width} heightInches={height}></LabelPreview>
+        <LabelPreview values={label} widthInches={currentSize.widthInches} heightInches={currentSize.heightInches}></LabelPreview>
       {/each}
       </section>
       <p><button on:click={(e) => printBatch(e, `js-label-group-${i}`)}>Print</button></p>
