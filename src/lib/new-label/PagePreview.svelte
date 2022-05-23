@@ -21,7 +21,7 @@
     const copies = parseInt(c, 10);
 
     try {
-      const resp = await fetch('/api/print', {
+      await fetch('/api/print', {
         method: 'post',
         body: JSON.stringify({
           copies: copies,

@@ -5,7 +5,7 @@
   export let widthInches;
   export let heightInches;
 
-  let canvas;
+  export let canvas;
 
   class LabelGenerator {
     constructor(c) {

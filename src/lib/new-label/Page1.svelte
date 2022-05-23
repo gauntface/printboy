@@ -8,7 +8,7 @@
 <div>
   <p>Please select or upload an image for use with your label or select next to create a label without an image:</p>
 
-  <form method="post" on:submit={onSubmit}>
+  <form method="post" on:submit|preventDefault={onSubmit}>
 
     {#if labelPresets && labelPresets.images && labelPresets.images.length}
       <div class="l-imgradios">
