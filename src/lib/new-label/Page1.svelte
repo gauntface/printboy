@@ -34,15 +34,8 @@
           </div>
         {/each}
       </div>
-      <p class="c-formhr"><i>or</i></p>
     {/if}
 
-    <p><label for="uploadlabelimage">Upload a new label:</label></p>
-
-    <p><input type="file"
-          id="uploadlabelimage" name="labelimage"
-          accept="image/png, image/jpeg, image/svg"></p>
-    <br />
     <p><button type=submit>Next page</button></p>
   </form>
 </div>
