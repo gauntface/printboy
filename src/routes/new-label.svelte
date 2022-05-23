@@ -39,7 +39,6 @@
       }
       pageState[k] = v;
     }
-    console.log(pageState);
   }
 
   function onSubmit(e) {
@@ -48,7 +47,6 @@
     updateValues(e.target);
 
     if(page == pages.length - 1) {
-      console.log(`TODO: Submit data: `, pageState);
       goto('/');
       return;
     }

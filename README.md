@@ -37,6 +37,8 @@ A lot of this is from these articles:
 ### Install printboy
 
 1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
-
+1. Clone this repo
+1. Run `npm install`
+1. `npm run dev`
 
 // TODO

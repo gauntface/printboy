@@ -7,7 +7,6 @@ import os from 'os';
 const execP = util.promisify(exec);
 
 export async function post({ request }) {
-  console.log(`Time to print something...........`);
   const { copies, base64, widthInches, heightInches } = await request.json();
 
   if (copies < 1) {
@@ -37,8 +36,6 @@ export async function post({ request }) {
     "-o", `media=Custom.${heightInches}x${widthInches}in`,
 		tmpfile,
   ];
-
-  console.log(`Print ${copies} of `, tmpfile);
 
   for (let i = 0; i < copies; i++) {
     try {

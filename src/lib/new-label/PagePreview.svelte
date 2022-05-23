@@ -19,7 +19,6 @@
     const data = new FormData(f);
     const c = data.get("copies");
     const copies = parseInt(c, 10);
-    console.log(`Print ${copies} copies`, typeof copies);
 
     try {
       const resp = await fetch('/api/print', {
@@ -31,7 +30,6 @@
           heightInches: height,
         }),
       })
-      console.log('Print resp: ', await resp.text())
     } catch (err) {
       console.error('Failed to print: ', err);
     }

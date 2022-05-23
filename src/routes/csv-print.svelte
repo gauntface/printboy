@@ -65,7 +65,6 @@
   async function printBatch(e, groupSelector) {
     e.preventDefault();
     e.target.disabled = true;
-    console.log(`Print batch`, e, groupSelector);
 
     const labels = document.querySelectorAll(`.${groupSelector} canvas`);
 
@@ -80,7 +79,6 @@
             heightInches: height,
           }),
         })
-        console.log('Print resp: ', await resp.text())
       } catch (err) {
         console.error('Failed to print: ', err);
       }
