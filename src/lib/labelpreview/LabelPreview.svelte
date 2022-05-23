@@ -3,17 +3,19 @@
 
   export let values;
   export let canvas;
-
+  export let widthInches;
+  export let heightInches;
 
   class LabelGenerator {
-    constructor() {
-      const c = document.querySelector('.js-label-canvas');
-      if (!c) {
-        throw new Error("Could not find canvas")
-      }
-      canvas = c;
-      console.log(`Canvas Set => `, canvas, values);
+    constructor(c) {
       this.canvas = c;
+      // 30252 Address Label
+      // 3-1/2" x 1-1/8"
+
+      // 30364 Name Badge
+      // 4" x 2.25"
+      this.canvas.width = Math.floor(widthInches * 300);
+      this.canvas.height = Math.floor(heightInches * 300);
       this.context = c.getContext('2d');
     }
 
@@ -22,34 +24,31 @@
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
       let labelimage = null;
+      const textGroups = [];
+
       if (values.labelimage) {
         labelimage = await genImage(values.labelimage);
       }
+      if (values.labeltitle) {
+        textGroups.push(new TextGroup(values.labeltitle, 700, 'Roboto'));
+      }
+      if (values.labeladdress) {
+        textGroups.push(new TextGroup(values.labeladdress, 400, 'Roboto'));
+      }
 
-      const placement = this.measureLabel(labelimage);
-
+      const placement = this.measureLabel(labelimage, textGroups);
       if (labelimage) {
         this.context.drawImage(labelimage, placement.logoLeft, placement.logoTop, placement.logoWidth, placement.logoHeight)
       }
 
       let y = placement.contentsTop;
-      if (values.labeltitle) {
-        this.context.font = this.fontString(700, placement.fontSize, 'Roboto');
-        this.context.fillText(values.labeltitle, placement.contentsLeft, y + placement.fontAscent);
-        y += placement.fontAscent + placement.fontDescent;
-      }
-
-      if (values.labeladdress) {
-        const lines = values.labeladdress.split('\n');
-        for (const l of lines) {
-          this.context.font = this.fontString(500, placement.fontSize, 'Roboto');
-          this.context.fillText(l, placement.contentsLeft, y + placement.fontAscent);
-          y += placement.fontAscent + placement.fontDescent;
-        }
+      for (const tg of textGroups) {
+        const measure = tg.draw(this.context, placement.fontSize, placement.contentsLeft, y);
+        y += measure.height;
       }
     }
 
-    measureLabel(labelimage) {
+    measureLabel(labelimage, textGroups) {
       const measurements = {
         logoWidth: 0,
         logoHeight: 0,
@@ -75,42 +74,23 @@
       if (labelimage) {
         columns++;
 
-        const {width, height} = this.logoImgSize(labelimage, availableHeight)
+        const {width, height} = this.logoImgSize(labelimage, availableWidth, availableHeight)
         measurements.logoWidth = width;
         measurements.logoHeight = height;
       }
+
       if (measurements.logoWidth) {
         availableWidth = availableWidth - measurements.logoWidth - padding
       }
 
-      if (values.labeladdress) {
+      if (textGroups.length > 0) {
         columns++;
-        const lines = values.labeladdress.split("\n")
-        measurements.fontSize = this.findFontSize(lines, availableWidth);
-        let maxWidth = 0;
-        let maxAscent = 0;
-        let maxDescent = 0;
-
-        for (const l of lines) {
-          this.context.font = this.fontString(400, measurements.fontSize, 'Roboto');
-          const mt = this.context.measureText(l);
-          if (mt.width > maxWidth) {
-            maxWidth = mt.width;
-          }
-          if (mt.actualBoundingBoxAscent > maxAscent) {
-            maxAscent = mt.actualBoundingBoxAscent;
-          }
-          if (mt.actualBoundingBoxDescent > maxDescent) {
-            maxDescent = mt.actualBoundingBoxDescent;
-          }
-        }
-
-        measurements.fontAscent = maxAscent;
-        measurements.fontDescent = maxDescent;
-
-        measurements.contentsWidth = maxWidth;
-        measurements.contentsHeight = lines.length * (maxAscent + maxDescent);
       }
+
+      measurements.fontSize = this.findFontSize(textGroups, availableWidth);
+      const textSize = this.calcTextSize(textGroups, measurements.fontSize);
+      measurements.contentsWidth = textSize.width;
+      measurements.contentsHeight = textSize.height;
 
       const consumedWidth = measurements.logoWidth + measurements.contentsWidth;
       const remainingWidth = this.canvas.width - consumedWidth;
@@ -126,13 +106,14 @@
       return measurements;
     }
 
-    findFontSize(lines, availableWidth) {
-      let fontSize = 42;
+    findFontSize(textGroups, availableWidth) {
+      let fontSize = 64;
       while (true) {
         if (fontSize == 0) {
           break;
         }
-        const w = this.maxLineWidth(lines, fontSize);
+
+        const w = this.maxLineWidth(textGroups, fontSize);
         if (w <= availableWidth) {
           break;
         }
@@ -145,27 +126,30 @@
       return fontSize
     }
 
-    maxLineWidth(lines, fontSize) {
+    calcTextSize(textGroups, fontSize) {
+      const size = {
+        width: 0,
+        height: 0,
+      };
+      for (const tg of textGroups) {
+        const measurements = tg.measure(this.context, fontSize)
+        size.width = Math.max(size.width, measurements.width);
+        size.height += measurements.height;
+      }
+      return size;
+    }
+
+    maxLineWidth(textGroups, fontSize) {
       let maxWidth = 0;
-      for (const l of lines) {
-        this.context.font = this.fontString(400, fontSize, 'Roboto');
-        const measurements = this.context.measureText(l);
-        if (measurements.width > maxWidth) {
-          maxWidth = measurements.width;
-        }
+      for (const tg of textGroups) {
+        const measurements = tg.measure(this.context, fontSize);
+        maxWidth = Math.max(maxWidth, measurements.width);
       }
       return maxWidth;
     }
 
-    fontString(weight, fontSize, fontName) {
-      return `${weight} ${fontSize}px ${fontName}`;
-    }
-
-    logoImgSize(img, availableHeight) {
-
-      // Minus some padding
-      const maxh = availableHeight;
-      const maxw = maxh;
+    logoImgSize(img, availableWidth, availableHeight) {
+      const maxd = Math.min(availableHeight, availableWidth * 0.35);
 
       const w = img.naturalWidth;
       const h = img.naturalHeight;
@@ -173,15 +157,63 @@
       if (w > h) {
         const r = h/w;
         return {
-          width: maxw,
-          height: maxw * r,
+          width: maxd,
+          height: maxd * r,
         }
       }
+
       const r = w/h;
       return {
-        width: maxh*r,
-        height: maxh,
+        width: maxd*r,
+        height: maxd,
       }
+    }
+
+    fontString(weight, size, name) {
+      return `${weight} ${size}px ${name}`;
+    }
+  }
+
+  class TextGroup {
+    constructor(text, fontWeight, fontName) {
+      this.lines = text.split("\n");
+      this.fontWeight = fontWeight;
+      this.fontName = fontName;
+    }
+
+    measure(context, fontSize) {
+      context.font = this.fontString(fontSize);
+
+      const measure = {
+        width: 0,
+        height: 0,
+        fontAscent: 0,
+        fontDescent: 0,
+      };
+      for (const l of this.lines) {
+        const measurements = context.measureText(l);
+        measure.width = Math.max(measure.width, measurements.width);
+        measure.height += measurements.fontBoundingBoxAscent + measurements.fontBoundingBoxDescent;
+        measure.fontAscent = Math.max(measure.fontAscent, measurements.fontBoundingBoxAscent);
+        measure.fontDescent = Math.max(measure.fontDescent, measurements.fontBoundingBoxDescent);
+      }
+      return measure;
+    }
+
+    draw(context, fontSize, x, yo) {
+      context.font = this.fontString(fontSize);
+      const measure = this.measure(context, fontSize);
+
+      let y = yo;
+      for (const l of this.lines) {
+        context.fillText(l, x, y + measure.fontAscent);
+        y += measure.fontAscent + measure.fontDescent;
+      }
+      return measure;
+    }
+
+    fontString(fontSize) {
+      return `${this.fontWeight} ${fontSize}px ${this.fontName}`;
     }
   }
 
@@ -199,13 +231,12 @@
   }
 
   onMount(() => {
-		const lg = new LabelGenerator();
+		const lg = new LabelGenerator(canvas);
     lg.refresh();
 	});
 </script>
 <div>
-  <p>Label Preview TBD</p>
-	<canvas class="c-label-preview js-label-canvas" width="1050" height="337"></canvas>
+	<canvas bind:this={canvas} class="c-label-preview js-label-canvas"></canvas>
 </div>
 
 <style>
@@ -214,5 +245,6 @@
     border-width: 4px;
     border-color: grey;
     width: 100%;
+    box-sizing: border-box;
   }
 </style>

@@ -6,6 +6,10 @@
   export let onBack;
   export let labelPresets;
 
+  // TODO: Make this configurable
+  let width = 4;
+  let height= 2.25;
+
   let canvas;
 
   async function printLabels(e, f) {
@@ -23,6 +27,8 @@
         body: JSON.stringify({
           copies: copies,
           base64: canvas.toDataURL(),
+          widthInches: width,
+          heightInches: height,
         }),
       })
       console.log('Print resp: ', await resp.text())
@@ -36,7 +42,7 @@
 <div>
   <p>Print you label if it looks good.</p>
 
-  <LabelPreview bind:canvas={canvas} values={initialValues}></LabelPreview>
+  <LabelPreview bind:canvas={canvas} values={initialValues} widthInches={width} heightInches={height}></LabelPreview>
 
   <form class="js-form" method="post" on:submit={onSubmit}>
     <div>

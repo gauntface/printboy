@@ -9,6 +9,9 @@
 			<li class:active={$page.url.pathname === '/new-label'}>
 				<a sveltekit:prefetch href="/new-label">New Label</a>
 			</li>
+			<li class:active={$page.url.pathname === '/csv-print'}>
+				<a sveltekit:prefetch href="/csv-print">CSV Print</a>
+			</li>
 			<li class:active={$page.url.pathname === '/settings'}>
 				<a sveltekit:prefetch href="/settings">Settings</a>
 			</li>

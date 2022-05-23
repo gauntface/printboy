@@ -8,7 +8,7 @@ const execP = util.promisify(exec);
 
 export async function post({ request }) {
   console.log(`Time to print something...........`);
-  const { copies, base64 } = await request.json();
+  const { copies, base64, widthInches, heightInches } = await request.json();
 
   if (copies < 1) {
     return {
@@ -28,12 +28,13 @@ export async function post({ request }) {
   const tmpfile = path.join(tmpdir, `label.png`);
   fs.writeFileSync(tmpfile, base64Data, 'base64');
 
-  // "-o", "PageSize=30252_Address",
-	// "-o", "PrintDensity=Light",
-	// "-o", "PrintQuality=Graphics",
+  // From https://www.cups.org/doc/options.html#OPTIONS
+	// "-o media=Custom.<Width>x<Height>in"
 	const args = [
     "lp",
     "-d", "DYMO_LabelWriter_450_Turbo",
+    // The width and height is rotated on the printer.
+    "-o", `media=Custom.${heightInches}x${widthInches}in`,
 		tmpfile,
   ];
 
