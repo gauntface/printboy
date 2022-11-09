@@ -24,6 +24,7 @@ A lot of this is from these articles:
     1. `git clone https://github.com/matthiasbock/dymo-cups-drivers.git`
     1. `sudo mkdir -p /usr/share/cups/model`
     1. `sudo cp dymo-cups-drivers/ppd/lw450.ppd /usr/share/cups/model/`
+1. Add yourself as a cups admin `sudo usermod -a -G lpadmin your-username`
 1. Go to CUPs admin page [http://localhost:631](http://localhost:631)
     1. Use your computer login credentials for the username and password for the site
 1. Install the printer
