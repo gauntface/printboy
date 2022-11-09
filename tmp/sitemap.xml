@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://printboy.local/categories/</loc>
+  </url><url>
+    <loc>http://printboy.local/create-label/</loc>
+  </url><url>
+    <loc>http://printboy.local/</loc>
+  </url><url>
+    <loc>http://printboy.local/settings/</loc>
+  </url><url>
+    <loc>http://printboy.local/tags/</loc>
+  </url>
+</urlset>

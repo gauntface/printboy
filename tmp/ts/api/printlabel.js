@@ -1,0 +1,1 @@
+(()=>{var n="production",i=n=="development"?"http://localhost:1314":"";async function h(e,t){await fetch(`${i}/api/print`,{method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify({copies:t,base64:e.labelAsBase64(),widthInches:e.widthInInches(),heightInches:e.heightInInches()})})}})();

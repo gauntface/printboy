@@ -1,0 +1,1 @@
+.drac-switch{border-radius:11px;width:38px}.drac-switch:after{background:var(--active-inner);border-radius:50%;height:15px;left:2px;top:2px;transform:translateX(0);width:15px}.drac-switch:checked{--ab:var(--active);--x:17px;background:none}.drac-switch:disabled:not(:checked):after{opacity:.6}

@@ -1,0 +1,1 @@
+.drac-list-ordered{counter-reset:li}.drac-list-ordered li{counter-increment:li;margin-left:-30px}.drac-list-ordered li:before{color:#9580ff;content:counter(li,decimal) ".";display:inline-block;margin-left:15px;padding-right:5px;text-align:right;width:30px}
