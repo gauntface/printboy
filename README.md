@@ -44,7 +44,7 @@ A lot of this is from these articles:
 1. [Configure global NPM](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
 1. Run `npm install -g pm2`
 1. Run `pm2 start ./build/index.js --name="printboy"`
-1. Run `pm2 startup systemd` froll the steps
+1. Run `pm2 startup systemd` follow the steps
 1. Run `pm2 save`
 
 #### Optional: Install Reverse Proxy
