@@ -40,6 +40,8 @@ A lot of this is from these articles:
 1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
 1. Clone this repo
 1. Run `npm install`
+1. Run `npm run build`
+1. [Configure global NPM](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
 1. Run `npm install -g pm2`
 1. Run `pm2 start ./build/index.js --name="printboy"`
 1. Run `pm2 startup systemd` froll the steps
