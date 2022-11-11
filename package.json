@@ -6,7 +6,7 @@
     "drac": "rm -rf static/third_party/dracula-ui && mkdir -p static/third_party/dracula-ui && cp -r node_modules/@gauntface/dracula-ui/styles/ static/third_party/dracula-ui"
   },
   "devDependencies": {
-    "@gauntface/dracula-ui": "^0.0.5"
+    "@gauntface/dracula-ui": "^0.0.6"
   },
   "type": "module"
 }
