@@ -9,10 +9,8 @@ async function run() {
 	const resp = await fetch(`${apiDomain}/api/labels/images`);
 	const imgs = await resp.json();
 	for (const img of imgs) {
-		console.log(`TODO: Load img ${img.filename}`, img);
-
 		const container = document.createElement('div');
-		container.classList.add(...['drac-box', 'drac-mb-xs']);
+		container.classList.add('c-select-img');
 
 		const input = document.createElement('input');
 		input.type = "radio";
