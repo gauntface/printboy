@@ -14,9 +14,5 @@
   "baseURL": "http://printboy.local/",
   "languageCode": "en-us",
   "title": "The one and only printboy",
-  "theme": ["printboy", "base-theme"],
-
-  "params": {
-      "themecolor": "#80ffea"
-  }
+  "theme": ["printboy", "base-theme"]
 }

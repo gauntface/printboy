@@ -3,10 +3,16 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "npm run drac && hugo server --disableFastRender",
+    "dev-api": "pm2 stop printboy && pm2 start api/index.js --watch --attach --name=printboy",
     "drac": "rm -rf static/third_party/dracula-ui && mkdir -p static/third_party/dracula-ui && cp -r node_modules/@gauntface/dracula-ui/styles/ static/third_party/dracula-ui"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.8"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0"
+  }
 }

@@ -40,7 +40,6 @@ class Tabs {
 			t.classList.remove(CLASSNAMES.TAB_VISIBLE);
 		}
 		const vistabs = this._tabsContainer.querySelectorAll(`.${CLASSNAMES.TAB_ACTIVE}`);
-		console.log(vistabs);
 		for (const t of vistabs) {
 			t.classList.remove(CLASSNAMES.TAB_ACTIVE);
 		}

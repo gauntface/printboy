@@ -1,0 +1,14 @@
+---
+title: "Upload Image"
+---
+
+<h1 class="drac-heading drac-heading-2xl">Upload Image</h1>
+
+<form method="post" action="{{< api_domain >}}/api/labels/images" encType="multipart/form-data">
+	<label class="c-wrap-file-input drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple drac-m-sm">
+  	<input type="file" accept=".svg" name="upload-image">
+		Select SVG File
+	</label>
+	<input type="hidden" name="form-url" value="/settings/images/upload/">
+  <button class="drac-btn drac-bg-purple-cyan drac-m-sm drac-text-black" type="submit">Upload</button>
+</form>
