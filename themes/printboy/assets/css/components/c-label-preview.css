@@ -1,0 +1,5 @@
+.c-label-preview {
+    width: 100%;
+    background: #fff;
+    border-radius: var(--padding);
+}

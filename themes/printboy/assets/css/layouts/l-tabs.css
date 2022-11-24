@@ -1,0 +1,14 @@
+.l-tabs {
+	display: flex;
+}
+
+.l-tabs__content {
+	display: block; /* undo "display: none;" */
+  	visibility: hidden;
+  	margin-right: -100%;
+  	width: 100%;
+}
+
+.l-tabs__content--visible {
+	visibility: visible;
+}

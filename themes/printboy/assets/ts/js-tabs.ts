@@ -1,7 +1,7 @@
 import {OnLoad} from './utils/_onload';
 
 const CLASSNAMES = {
-	TAB_VISIBLE: 'l-tab-content--visible',
+	TAB_VISIBLE: 'l-tabs__content--visible',
 	TAB_ACTIVE: 'drac-tab-active',
 };
 
