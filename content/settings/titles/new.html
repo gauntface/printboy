@@ -1,0 +1,17 @@
+---
+title: "New Title"
+---
+
+<h1 class="drac-heading drac-heading-2xl">New Title</h1>
+
+<form method="post" action="{{< api_domain >}}/api/labels/titles" encType="multipart/form-data">
+	<div class="l-input-btn">
+		<input
+			name="title"
+			placeholder="New title...."
+			class="drac-input drac-input-purple drac-text-purple"
+		/>
+		<input type="hidden" name="form-url" value="/settings/titles/new/">
+		<button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
+	</div>
+</form>

@@ -1,19 +1,15 @@
 import path from 'path';
-import os from 'os';
-import {readdir, readFile, mkdir} from 'node:fs/promises';
-import {exists} from '../utils/files.js';
+import {readdir, readFile} from 'node:fs/promises';
+import {pathForLabelSettings} from './constants.js';
 
-export const imageDir = path.join(os.homedir(), '.printboy', 'labels', 'images');
+const IMAGES_DIR = 'images';
 
 export async function getPresetImages() {
-  if (!await exists(imageDir)) {
-    return [];
-  }
-
+  const imgPath = await pathForLabelSettings(IMAGES_DIR);
   const images = [];
-  const imgFiles = await readdir(imageDir);
+  const imgFiles = await readdir(imgPath);
   for (const filename of imgFiles) {
-    const filepath = path.join(imageDir, filename);
+    const filepath = path.join(imgPath, filename);
     const base64 = await readFile(filepath, {
       encoding: "base64",
     });
@@ -35,6 +31,6 @@ export async function getPresetImages() {
 }
 
 export async function uploadImage(img) {
-	await mkdir(imageDir, { recursive: true });
-	await img.mv(path.join(imageDir, img.name));
+  const p = await pathForLabelSettings(IMAGES_DIR);
+	await img.mv(path.join(p, img.name));
 }

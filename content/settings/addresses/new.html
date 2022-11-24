@@ -1,0 +1,18 @@
+---
+title: "New Address"
+---
+
+<h1 class="drac-heading drac-heading-2xl">New Address</h1>
+
+<form method="post" action="{{< api_domain >}}/api/labels/addresses" encType="multipart/form-data">
+	<div class="l-input-btn">
+		<textarea
+			name="address"
+			placeholder="New address...."
+            rows="6"
+			class="c-textarea drac-py-xs drac-input drac-input-purple drac-text-purple"
+		></textarea>
+		<input type="hidden" name="form-url" value="/settings/addresses/new/">
+		<button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
+	</div>
+</form>
