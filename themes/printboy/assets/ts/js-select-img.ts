@@ -7,6 +7,14 @@ async function run() {
 		return;
 	}
 
+	const existingInputs = selectionContainer.querySelectorAll('input');
+	for (const i of existingInputs) {
+		i.addEventListener('click', function(e) {
+			const value = (e.target as HTMLInputElement).value;
+			updateLabelPreviews(value);
+		})
+	}
+
 	const resp = await fetch(`${apiDomain}/api/labels/images`);
 	const imgs = await resp.json();
 	for (const img of imgs) {
