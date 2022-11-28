@@ -7,6 +7,8 @@ export class LabelPreview {
     private _b64Img: string;
     private _title: string;
     private _address: string;
+    private _widthInInches: number;
+    private _heightInInches: number;
 
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
@@ -23,10 +25,24 @@ export class LabelPreview {
         if (!hi) {
             throw new Error('height-inches not defined on the canvas element');
         }
-        this._canvas.width = Math.floor(Number(wi) * 300);
-        this._canvas.height = Math.floor(Number(hi) * 300);
+        this._widthInInches = Number(wi);
+        this._heightInInches = Number(hi);
+        this._canvas.width = Math.floor(this._widthInInches * 300);
+        this._canvas.height = Math.floor(this._heightInInches * 300);
 
         this._canvas['labelPreview'] = this;
+    }
+
+    labelAsBase64() {
+      return this._canvas.toDataURL();
+    }
+
+    widthInInches() {
+      return this._widthInInches;
+    }
+
+    heightInInches() {
+      return this._heightInInches;
     }
 
     setImage(value) {
@@ -105,9 +121,7 @@ export class LabelPreview {
 
           const fontSize = this.findFontSize(textGroups, w, h);
           const measure = this.calcTextGroupSize(textGroups, fontSize);
-          console.log(`Allowed W => ${w} Text Width => `, measure);
           let x = l + (w - measure.width);
-          console.log(`x => ${x}`);
           let y = t + ((h - measure.height) / 2);
           for (const tg of textGroups) {
             const measure = tg.draw(this._context, fontSize, x, y);

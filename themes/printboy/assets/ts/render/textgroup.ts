@@ -22,7 +22,6 @@ export class TextGroup {
         };
         for (const l of this.lines) {
             const measurements = context.measureText(l);
-            console.log(`Measurements => ${fontSize} => '${l}' `, measurements);
             measure.width = Math.max(measure.width, measurements.width);
             measure.height += measurements.fontBoundingBoxAscent + measurements.fontBoundingBoxDescent;
             measure.fontAscent = Math.max(measure.fontAscent, measurements.fontBoundingBoxAscent);
