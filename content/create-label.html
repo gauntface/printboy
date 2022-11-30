@@ -2,13 +2,13 @@
 title: "New Label"
 ---
 
-<h1 class="drac-heading drac-heading-2xl">New Label</h1>
+<div class="drac-my-md">
+	<h1 class="drac-heading drac-heading-2xl">New Label</h1>
+</div>
 
 <canvas class="c-label-preview js-label-preview" width-inches="3" height-inches="1.125"></canvas>
-<div class="c-label-preview__title">.</div>
-<div class="c-label-preview__address">.</div>
 
-<ul class="drac-tabs drac-tabs-cyan js-tabs" for="create-label">
+<ul class="drac-tabs drac-tabs-cyan c-full-width-tabs js-tabs" for="create-label">
   <li class="drac-tab">
     <div class="drac-tab-link drac-text js-tab" for="select-img">Select Image</div>
   </li>
@@ -56,7 +56,7 @@ title: "New Label"
 
 		<div class="drac-box drac-p-md drac-my-md drac-bg-black-secondary drac-rounded-lg">
 			<div class="js-select-title l-titleradios">
-				<div class="c-select-title">
+				<div class="c-create-label-selection">
 					<input type="radio" name="labeltitle" id="no-title" value="" checked>
 					<label for="no-title">No Title</label>
 				</div>
@@ -78,7 +78,7 @@ title: "New Label"
 		
 		<div class="drac-box drac-p-md drac-my-md drac-bg-black-secondary drac-rounded-lg">
 			<div class="js-select-address l-addressradios">
-				<div class="c-select-address">
+				<div class="c-create-label-selection">
 					<input type="radio" name="labeladdress" id="no-address" value="" checked>
 					<label for="no-address">No Address</label>
 				</div>
@@ -109,7 +109,11 @@ title: "New Label"
 		</div>
 
 		<div class="drac-text drac-text-center">
-			<a class="drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple" href="/settings/titles/new">Save Label</a></p>
+			<a class="drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple" href="#">TODO: Save Label</a></p>
 		</div>
 	</div>
 </div>
+
+<!-- These are used to force fonts to download -->
+<div class="c-label-preview__title">.</div>
+<div class="c-label-preview__address">.</div>

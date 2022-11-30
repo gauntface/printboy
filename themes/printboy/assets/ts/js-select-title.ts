@@ -19,7 +19,7 @@ async function run() {
 	const titles = await resp.json();
 	for (const title of titles) {
 		const container = document.createElement('div');
-		container.classList.add('c-select-title');
+		container.classList.add('c-create-label-selection');
 
 		const input = document.createElement('input');
 		input.type = "radio";

@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
-import {getPresetImages, uploadImage} from './models/saved-images.js';
-import {getPresetTitles, addTitle} from './models/saved-titles.js';
-import {getPresetAddresses, addAddress} from './models/saved-addresses.js';
+import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-images.js';
+import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
+import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
 import {exec} from 'node:child_process';
 import util from 'util';
 import os from 'os';
@@ -24,6 +24,20 @@ app.use(express.json({ extended: true }));
 
 app.get('/api/labels/images', async (req, res) => {
   res.json(await getPresetImages());
+});
+
+app.delete('/api/labels/images', async (req, res) => {
+  if (!req.body || !req.body.filename) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Filename must be provided.',
+      }
+    });
+    return;
+  }
+  await deletePresetImage(req.body.filename);
+  res.json({});
 });
 
 app.post('/api/labels/images', async (req, res) => {
@@ -47,6 +61,20 @@ app.get('/api/labels/titles', async (req, res) => {
   res.json(await getPresetTitles());
 });
 
+app.delete('/api/labels/titles', async (req, res) => {
+  if (!req.body || !req.body.filename) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Filename must be provided.',
+      }
+    });
+    return;
+  }
+  await deletePresetTitle(req.body.filename);
+  res.json({});
+});
+
 app.post('/api/labels/titles', async (req, res) => {
   if (!req.body['form-url']) {
     res.redirect(`${req.headers.referer}/`);
@@ -66,6 +94,20 @@ app.post('/api/labels/titles', async (req, res) => {
 
 app.get('/api/labels/addresses', async (req, res) => {
   res.json(await getPresetAddresses());
+});
+
+app.delete('/api/labels/addresses', async (req, res) => {
+  if (!req.body || !req.body.filename) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Filename must be provided.',
+      }
+    });
+    return;
+  }
+  await deletePresetAddress(req.body.filename);
+  res.json({});
 });
 
 app.post('/api/labels/addresses', async (req, res) => {

@@ -1,0 +1,12 @@
+.c-settings-table {
+    width: 100%;
+}
+
+.c-settings-table thead {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.c-settings-table td, .c-settings-table th {
+    padding: calc(var(--padding) * 0.5);
+    text-align: center;
+}

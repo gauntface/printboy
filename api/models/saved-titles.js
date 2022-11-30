@@ -1,5 +1,5 @@
 import path from 'path';
-import {writeFile, readdir, readFile} from 'node:fs/promises';
+import {writeFile, readdir, readFile, rm} from 'node:fs/promises';
 import {pathForLabelSettings} from './constants.js';
 import {hashForValue} from '../utils/files.js';
 
@@ -23,4 +23,9 @@ export async function addTitle(newTitle) {
     const p = await pathForLabelSettings(TITLE_DIR);
     const filename = `${hashForValue(newTitle)}.txt`;
     await writeFile(path.join(p, filename), newTitle);
+}
+
+export async function deletePresetTitle(filename) {
+	const p = await pathForLabelSettings(TITLE_DIR);
+	await rm(path.join(p, filename));
 }

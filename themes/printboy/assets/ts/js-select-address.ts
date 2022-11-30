@@ -18,7 +18,7 @@ async function run() {
 	const addresses = await resp.json();
 	for (const addr of addresses) {
 		const container = document.createElement('div');
-		container.classList.add('c-select-address');
+		container.classList.add('c-create-label-selection');
 
 		const input = document.createElement('input');
 		input.type = "radio";

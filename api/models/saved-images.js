@@ -1,5 +1,5 @@
 import path from 'path';
-import {readdir, readFile} from 'node:fs/promises';
+import {readdir, readFile, rm} from 'node:fs/promises';
 import {pathForLabelSettings} from './constants.js';
 
 const IMAGES_DIR = 'images';
@@ -33,4 +33,9 @@ export async function getPresetImages() {
 export async function uploadImage(img) {
   const p = await pathForLabelSettings(IMAGES_DIR);
 	await img.mv(path.join(p, img.name));
+}
+
+export async function deletePresetImage(filename) {
+  const p = await pathForLabelSettings(IMAGES_DIR);
+  await rm(path.join(p, filename));
 }
