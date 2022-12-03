@@ -10,13 +10,19 @@ export async function getPresetTitles() {
 	const values = [];
 	const files = await readdir(titlesPath);
 	for (const filename of files) {
-		const filepath = path.join(titlesPath, filename);
-		values.push({
-			filename,
-			text: (await readFile(filepath)).toString(),
-		});
+		values.push(await getPresetTitle(filename));
 	}
 	return values
+}
+
+export async function getPresetTitle(filename) {
+	const titlesPath = await pathForLabelSettings(TITLE_DIR);
+	const filepath = path.join(titlesPath, filename);
+	return {
+		filename,
+		text: (await readFile(filepath)).toString(),
+	};
+
 }
 
 export async function addTitle(newTitle) {

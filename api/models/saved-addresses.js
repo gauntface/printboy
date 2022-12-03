@@ -10,13 +10,18 @@ export async function getPresetAddresses() {
 	const values = [];
 	const files = await readdir(addressesPath);
 	for (const filename of files) {
-		const filepath = path.join(addressesPath, filename);
-		values.push({
-			filename,
-			text: (await readFile(filepath)).toString(),
-		});
+		values.push(await getPresetAddress(filename));
 	}
 	return values
+}
+
+export async function getPresetAddress(filename) {
+	const addressesPath = await pathForLabelSettings(ADDRESS_DIR);
+	const filepath = path.join(addressesPath, filename);
+	return {
+		filename,
+		text: (await readFile(filepath)).toString(),
+	};
 }
 
 export async function addAddress(newAddr) {

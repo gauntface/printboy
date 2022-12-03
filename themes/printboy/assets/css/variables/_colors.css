@@ -1,4 +1,6 @@
 :root {
 	--accent-color: #80ffea;
 	--bg-color: #21222c;
+	--thead-color: rgba(149,128,255,.1);
+	--table-border-color: #9580ff;
 }

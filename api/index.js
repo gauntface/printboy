@@ -4,6 +4,7 @@ import fileUpload from 'express-fileupload';
 import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-images.js';
 import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
 import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
+import {getPresetLabels, addLabel, deletePresetLabel} from './models/saved-labels.js';
 import {exec} from 'node:child_process';
 import util from 'util';
 import os from 'os';
@@ -181,6 +182,35 @@ app.post('/api/print', async (req, res) => {
 	}
 
   res.json({});
+});
+
+app.get('/api/labels/presets', async (req, res) => {
+  res.json(await getPresetLabels());
+});
+
+app.post('/api/labels/presets', async (req, res) => {
+  if (!req.body) {
+    res.status(500);
+    res.json({
+      error: {
+        msg: 'Body required',
+      },
+    });
+    return;
+  }
+
+  try {
+    const { imageID, titleID, addressID } = req.body;
+    await addLabel(req.body);
+    res.json({});
+  } catch (err) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: `Failed to save label: ${err}`,
+      },
+    });
+  }
 });
 
 app.listen(port, () => {

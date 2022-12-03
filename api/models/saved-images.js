@@ -9,7 +9,14 @@ export async function getPresetImages() {
   const images = [];
   const imgFiles = await readdir(imgPath);
   for (const filename of imgFiles) {
-    const filepath = path.join(imgPath, filename);
+    images.push(await getPresetImage(filename));
+  }
+  return images;
+}
+
+export async function getPresetImage(filename) {
+  const imgPath = await pathForLabelSettings(IMAGES_DIR);
+  const filepath = path.join(imgPath, filename);
     const base64 = await readFile(filepath, {
       encoding: "base64",
     });
@@ -21,14 +28,13 @@ export async function getPresetImages() {
       default:
         console.warn(`Unknown image file extension: ${path.extname(filename)}`);
     }
-    images.push({
+    return {
       filename,
       filepath,
       base64: `${prefix}${base64}`,
-    });
-  }
-  return images;
+    };
 }
+
 
 export async function uploadImage(img) {
   const p = await pathForLabelSettings(IMAGES_DIR);

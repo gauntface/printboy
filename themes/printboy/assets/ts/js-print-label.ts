@@ -1,4 +1,4 @@
-import {apiDomain} from './config';
+import { printLabel } from './api/printlabel';
 import {LabelPreview} from './js-label-preview';
 
 async function run() {
@@ -17,18 +17,7 @@ async function run() {
 
         try {
             const lp = labelPreview['labelPreview'] as LabelPreview;
-            await fetch(`${apiDomain}/api/print`, {
-              method: 'post',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                copies: copies,
-                base64: lp.labelAsBase64(),
-                widthInches: lp.widthInInches(),
-                heightInches: lp.heightInInches(),
-              }),
-            })
+            await printLabel(lp, copies);
         } catch (err) {
             console.error('Failed to print: ', err);
         } finally {

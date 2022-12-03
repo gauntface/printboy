@@ -1,12 +1,25 @@
 .c-settings-table {
     width: 100%;
+    border-collapse: collapse;
+
+}
+
+.c-settings-table, .c-settings-table td, .c-settings-table th {
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--table-border-color);
 }
 
 .c-settings-table thead {
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--thead-color);
 }
 
 .c-settings-table td, .c-settings-table th {
     padding: calc(var(--padding) * 0.5);
+}
+
+
+.c-settings-table td:last-child {
+    width: 20%;
     text-align: center;
 }

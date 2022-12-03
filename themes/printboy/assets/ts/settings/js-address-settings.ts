@@ -16,7 +16,17 @@ async function run() {
         tr.append(tdTitle);
         tr.append(tdActions);
 
-		tdTitle.textContent = address.text;
+        const lines = address.text.split("\n");
+        console.log(lines);
+        for(let i = 0; i < lines.length; i++) {
+            const s = document.createElement('span');
+            s.textContent = lines[i];
+            tdTitle.append(s);
+            if (i+1 < lines.length) {
+                tdTitle.append(document.createElement('br'));
+            }
+        }
+
 
         const btn = document.createElement('button') as HTMLButtonElement;
         btn.classList.add('drac-btn', 'drac-bg-purple-cyan');
