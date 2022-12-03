@@ -1,0 +1,81 @@
+name: Release 🚀
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (i.e. patch, minor or major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    # Get the code
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - uses: actions/setup-node@v3
+      with:
+        registry-url: https://registry.npmjs.org/
+
+    # Install dependencies
+    - name: Install NPM Deps 🌎
+      run: |
+        npm install
+        go install github.com/gauntface/go-html-asset-manager/v4/cmds/htmlassets@latest
+        go install github.com/gauntface/go-html-asset-manager/v4/cmds/genimgs@latest
+        go install github.com/tdewolff/minify/v2/cmd/minify@latest
+    - name: Build 🔧
+      run: npm run build
+
+    - name: Update package.json ⬆️
+      # In case the version remains the same (i.e. re-run a failed release)
+      run: npm version ${{ inputs.version }} --no-git-tag-version || true
+    - name: Get version from package.json
+      id: version
+      run: echo "VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_OUTPUT
+    - name: Commit any package.json changes 📌
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Releasing ${{ steps.version.outputs.VERSION }}"
+        file_pattern: 'package.json'
+
+    - name: Create Release Directory 📂
+      run: |
+        mkdir release
+        cp LICENSE release/
+        cp package.json release/
+        cp README.md release/
+        cd build && cp -r . ../release/
+
+    - name: Create tar for GitHub release 🤐
+      run: |
+        cd release
+        tar -zcvf ../printboy-v${{ steps.version.outputs.VERSION }}.tar.gz .
+
+    - name: Create release on GitHub 📦
+      uses: ncipollo/release-action@v1
+      with:
+        tag: v${{ steps.version.outputs.VERSION }}
+        generateReleaseNotes: true
+        # In case the release exists (i.e. re-run a failed release)
+        allowUpdates: true
+        artifacts: "printboy-v${{ steps.version.outputs.VERSION }}.tar.gz"
+
+    - name: Publish package on NPM 📦
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: |
+        cd release
+        npm publish --access public

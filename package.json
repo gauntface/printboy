@@ -12,9 +12,10 @@
     "process-html": "npm run html-assets && npm run minify-html",
     "html-assets": "htmlassets --vimeo=$VIMEO_TOKEN",
     "minify-html": "minify -r --match=\\.html -o ./build/static ./build/static/*",
-    "start": "npm run build && npm run prod-api",
+    "prod": "npm run build && npm run prod-api",
     "prod-api": "(pm2 stop printboy || true) && pm2 start build/index.js --name=printboy",
-    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach"
+    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
+    "start": "(pm2 stop printboy || true) && pm2 start index.js --name=printboy"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.10",
