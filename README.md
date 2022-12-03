@@ -38,14 +38,15 @@ A lot of this is from these articles:
 ### Install printboy
 
 1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
-1. Run `npx --package=@gauntface/printboy setup`
+1. Run `npx @gauntface/printboy setup`
 
 #### Optional: Install Reverse Proxy
 
 1. Run `sudo apt update && sudo apt install nginx`
 1. Run `sudo nano /etc/nginx/sites-available/default`
     1. Change the `location / {` block to use:
-        ```
+
+        ```conf
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
@@ -59,5 +60,6 @@ A lot of this is from these articles:
                 proxy_cache_valid 5m;
         }
         ```
+
 1. Check for errors with `sudo nginx -t`
 1. Restart with `sudo systemctl restart nginx`
