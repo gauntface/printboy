@@ -10,18 +10,27 @@ import util from 'util';
 import os from 'os';
 import {mkdtemp, writeFile} from 'node:fs/promises';
 import path from 'path';
+import { URL } from 'url';
+import yargs from 'yargs/yargs';
+import {hideBin} from 'yargs/helpers';
+
+const argv = yargs(hideBin(process.argv)).argv
 
 const execP = util.promisify(exec);
 
 const app = express();
 const port = 1314;
 
-app.use(cors({
-  origin: 'http://localhost:1313',
-}))
+if (argv.cors) {
+  console.warn(`⚠️ Enabling cors for ${argv.cors}`);
+  app.use(cors({
+    origin: argv.cors,
+  }))
+}
 app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
+app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
 app.get('/api/labels/images', async (req, res) => {
   res.json(await getPresetImages());
@@ -211,6 +220,20 @@ app.post('/api/labels/presets', async (req, res) => {
       },
     });
   }
+});
+
+app.delete('/api/labels/presets', async (req, res) => {
+  if (!req.body || !req.body.filename) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Filename must be provided.',
+      }
+    });
+    return;
+  }
+  await deletePresetLabel(req.body.filename);
+  res.json({});
 });
 
 app.listen(port, () => {

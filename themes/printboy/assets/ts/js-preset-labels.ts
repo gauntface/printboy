@@ -8,8 +8,16 @@ async function run() {
 		return;
 	}
 
+	while (labelsContainer.firstChild) {
+		labelsContainer.removeChild(labelsContainer.firstChild);
+}
+
 	const resp = await fetch(`${apiDomain}/api/labels/presets`);
 	const presets = await resp.json();
+	if (presets.length == 0) {
+		labelsContainer.textContent = '👋 Hello. To add a quick print, create a new label and hit save.'
+		return;
+	}
 
 	for (const preset of presets) {
 		const canvas = document.createElement('canvas');
@@ -30,9 +38,9 @@ async function run() {
 			try {
 				const lp = canvas['labelPreview'] as LabelPreview;
 				await printLabel(lp, 1);
-		} catch (err) {
-				console.error('Failed to print: ', err);
-		}
+			} catch (err) {
+					console.error('Failed to print: ', err);
+			}
 		});
 	}
 }

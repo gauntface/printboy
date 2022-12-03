@@ -1,14 +1,15 @@
 import {apiDomain} from '../config';
+import {LabelPreview} from '../render/labelpreview';
 
 async function run() {
-	const selectionContainer = document.querySelector('.js-address-settings tbody');
+	const selectionContainer = document.querySelector('.js-label-settings tbody');
 	if (!selectionContainer) {
 		return;
 	}
 
-	const resp = await fetch(`${apiDomain}/api/labels/addresses`);
-	const addresses = await resp.json();
-	for (const address of addresses) {
+	const resp = await fetch(`${apiDomain}/api/labels/presets`);
+	const presets = await resp.json();
+	for (const preset of presets) {
         const tr = document.createElement('tr');
         const tdTitle = document.createElement('td');
         const tdActions = document.createElement('td');
@@ -16,16 +17,17 @@ async function run() {
         tr.append(tdTitle);
         tr.append(tdActions);
 
-        const lines = address.text.split("\n");
-        for(let i = 0; i < lines.length; i++) {
-            const s = document.createElement('span');
-            s.textContent = lines[i];
-            tdTitle.append(s);
-            if (i+1 < lines.length) {
-                tdTitle.append(document.createElement('br'));
-            }
-        }
+        const canvas = document.createElement('canvas');
+				canvas.classList.add('c-label-preview');
+				canvas.setAttribute("width-inches", "3");
+				canvas.setAttribute("height-inches", "1.125");
+				tdTitle.appendChild(canvas);
 
+				const lp = new LabelPreview(canvas);
+				lp.setImage(preset.image.base64, false);
+				lp.setTitle(preset.title.text, false);
+				lp.setAddress(preset.address.text, false);
+				lp.refresh();
 
         const btn = document.createElement('button') as HTMLButtonElement;
         btn.classList.add('drac-btn', 'drac-bg-purple-cyan');
@@ -34,15 +36,18 @@ async function run() {
             e.preventDefault();
             e.target.disabled = true;
             try {
-                await fetch(`${apiDomain}/api/labels/addresses`, {
+                const res = await fetch(`${apiDomain}/api/labels/presets`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        filename: address.filename,
+                        filename: preset.filename,
                     })
                 });
+								if (!res.ok) {
+									throw new Error('Request failed');
+								}
 
                 selectionContainer.removeChild(tr);
             } catch(err) {
