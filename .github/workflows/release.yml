@@ -71,6 +71,12 @@ jobs:
         cd release
         npm publish --access public
 
+    - name: Commit any package.json changes 📌
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Releasing ${{ steps.version.outputs.VERSION }}"
+        file_pattern: 'package.json'
+
     - name: Create tar for GitHub release 🤐
       run: |
         cd release
@@ -85,8 +91,3 @@ jobs:
         allowUpdates: true
         artifacts: "printboy-v${{ steps.version.outputs.VERSION }}.tar.gz"
 
-    - name: Commit any package.json changes 📌
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: "Releasing ${{ steps.version.outputs.VERSION }}"
-        file_pattern: 'package.json'
