@@ -1,0 +1,43 @@
+name: Build 🔧
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    # Get the code
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    # Setup environment
+    - name: Install Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '^1.18.3'
+    - uses: actions/setup-node@v3
+      with:
+        registry-url: https://registry.npmjs.org/
+    - name: Install Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: '0.101.0'
+
+    # Install dependencies
+    - name: Install NPM Deps 🌎
+      run: |
+        npm install
+        go install github.com/gauntface/go-html-asset-manager/v4/cmds/htmlassets@latest
+        go install github.com/gauntface/go-html-asset-manager/v4/cmds/genimgs@latest
+        go install github.com/tdewolff/minify/v2/cmd/minify@latest
+    - name: Build 🔧
+      run: npm run build

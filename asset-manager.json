@@ -1,0 +1,16 @@
+{
+	"html-dir": "build/static/",
+	"base-url": "http://printboy.local",
+	"assets": {
+		"static-dir": "build/static/",
+		"generated-dir": "build/static/generated/"
+	},
+	"gen-assets": {
+		"static-dir": "static/",
+		"output-dir": "static/generated/",
+		"max-width": 700,
+		"max-density": 3
+	},
+	"img-to-picture": [],
+	"ratio-wrapper": []
+}

@@ -1,0 +1,1 @@
+.drac-radio{border-radius:50%}.drac-radio:after{background:var(--local-bg-color);border-radius:50%;height:19px;opacity:0;transform:scale(var(--scale));width:19px}.drac-radio:checked{--scale:0.8}.drac-radio:disabled:checked:after{background:var(--disabled-inner)}

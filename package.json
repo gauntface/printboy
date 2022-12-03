@@ -1,37 +1,35 @@
 {
-  "name": "printboy",
+  "name": "@gauntface/printboy",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
-    "prepare": "svelte-kit sync",
-    "check": "svelte-check --tsconfig ./jsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
-    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+    "build": "npm run clean && cp -r api/. build && npm run build-hugo && npm run process-html",
+    "build-hugo": "npm run drac && hugo && rm -rf tmp && cp -r build/static tmp",
+    "build-quick": "npm run clean && cp -r tmp build/static && npm run process-html",
+    "clean": "rm -rf build && mkdir -p build",
+    "dev": "npm run drac && hugo server --disableFastRender",
+    "dev-api": "(pm2 delete printboy || true) && pm2 start api/index.js --watch --attach --name=printboy -- --cors='http://localhost:1313'",
+    "drac": "rm -rf static/third_party/dracula-ui && mkdir -p static/third_party/dracula-ui && cp -r node_modules/@gauntface/dracula-ui/styles/ static/third_party/dracula-ui",
+    "process-html": "npm run html-assets && npm run minify-html",
+    "html-assets": "htmlassets --vimeo=$VIMEO_TOKEN",
+    "minify-html": "minify -r --match=\\.html -o ./build/static ./build/static/*",
+    "prod": "npm run build && npm run prod-api",
+    "prod-api": "(pm2 stop printboy || true) && pm2 start build/index.js --name=printboy",
+    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
+    "start": "(pm2 stop printboy || true) && pm2 start index.js --name=printboy"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
-    "@types/cookie": "0.5.1",
-    "eslint": "8.29.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-svelte3": "4.0.0",
-    "formidable": "3.2.5",
-    "prettier": "2.8.0",
-    "prettier-plugin-svelte": "2.8.1",
-    "svelte": "3.53.1",
-    "svelte-check": "2.10.0",
-    "typescript": "4.9.3"
+    "@gauntface/dracula-ui": "^0.0.10",
+    "cssnano": "^5.1.14",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.0.1",
+    "postcss-preset-env": "^7.8.3"
   },
   "type": "module",
   "dependencies": {
-    "@fontsource/fira-mono": "4.5.10",
-    "@lukeed/uuid": "2.0.0",
-    "@sveltejs/adapter-node": "1.0.0-next.102",
-    "cookie": "0.5.0",
-    "csv": "6.2.5"
+    "pm2": "^5.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "yargs": "^17.6.2"
   }
 }

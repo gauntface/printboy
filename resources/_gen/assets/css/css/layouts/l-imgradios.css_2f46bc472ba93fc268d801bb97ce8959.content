@@ -1,0 +1,1 @@
+.l-imgradios{grid-gap:16px;display:grid;grid-auto-rows:1fr;grid-template-columns:1fr 1fr 1fr 1fr}

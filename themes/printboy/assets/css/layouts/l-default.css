@@ -1,0 +1,12 @@
+.l-default {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.l-default__content {
+  width: 100%;
+  max-width: 800px;
+}

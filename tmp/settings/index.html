@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <title>Settings</title>
+
+  
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Images   Image Name Actions      Add New Image Select SVG File  Upload    Titles   Title Actions      Add New Title Add    Addresses   Address Actions      Add New Address  Add    Labels   Label Actions       To create a new label, please run through the create label flow and click save label at the end (instead of print).">
+  <meta name="theme-color" content="#80ffea"/><meta property="og:title" content="Settings">
+<meta property="og:description" content="Images   Image Name Actions      Add New Image Select SVG File  Upload    Titles   Title Actions      Add New Title Add    Addresses   Address Actions      Add New Address  Add    Labels   Label Actions       To create a new label, please run through the create label flow and click save label at the end (instead of print).">
+<meta property="og:url" content="http://printboy.local/settings/">
+
+
+  
+  <link rel="shortcut icon" type="image/png" href="/favicon-32x32.png" sizes="32x32"/>
+  <link rel="shortcut icon" type="image/png" href="/favicon-128x128.png" sizes="128x128"/>
+  
+</head><body>
+<div class="l-default drac-bg-black drac-text-white">
+	<a class="u-no-tdec" href="/">
+		<h1 class="drac-heading drac-heading-2xl drac-text-purple-cyan">
+			Printboy
+		</h1>
+	</a>
+
+	<main class="l-default__content">
+
+
+<section class="l-settings-group">
+    <h2>Images</h2>
+
+    <table class="c-settings-table c-img-settings js-img-settings">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <h3>Add New Image</h3>
+
+    <form method="post" action="http://localhost:1314/api/labels/images" encType="multipart/form-data">
+        <div class="l-input-btn">
+            <label class="c-wrap-file-input drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple">
+                <input type="file" accept=".svg" name="upload-image">
+                Select SVG File
+            </label>
+            <input type="hidden" name="form-url" value="/settings/">
+            <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Upload</button>
+        </div>
+    </form>
+</section>
+
+<section class="l-settings-group">
+    <h2>Titles</h2>
+
+    <table class="c-settings-table js-title-settings">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <h3>Add New Title</h3>
+
+    <form method="post" action="http://localhost:1314/api/labels/titles" encType="multipart/form-data">
+        <div class="l-input-btn">
+            <input
+                name="title"
+                placeholder="New title...."
+                class="drac-input drac-input-purple drac-text-purple"
+            />
+            <input type="hidden" name="form-url" value="/settings/">
+            <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
+        </div>
+    </form>
+</section>
+
+<section class="l-settings-group">
+    <h2>Addresses</h2>
+
+    <table class="c-settings-table js-address-settings">
+        <thead>
+            <tr>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <h3>Add New Address</h3>
+
+    <form method="post" action="http://localhost:1314/api/labels/addresses" encType="multipart/form-data">
+        <div class="l-input-btn">
+            <textarea
+                name="address"
+                placeholder="New address...."
+                rows="6"
+                class="c-textarea drac-py-xs drac-input drac-input-purple drac-text-purple"
+            ></textarea>
+            <input type="hidden" name="form-url" value="/settings/">
+            <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
+        </div>
+    </form>
+</section>
+
+<section class="l-settings-group">
+    <h2>Labels</h2>
+
+    <table class="c-settings-table js-label-settings">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <p>
+        To create a new label, please run through the create label flow
+        and click save label at the end (instead of print).
+    </p>
+</section>
+
+	</main>
+</div>
+
+
+</body>
+</html>
