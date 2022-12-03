@@ -20,13 +20,13 @@
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.10",
     "cssnano": "^5.1.14",
-    "pm2": "^5.2.2",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.0.1",
     "postcss-preset-env": "^7.8.3"
   },
   "type": "module",
   "dependencies": {
+    "pm2": "^5.2.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
