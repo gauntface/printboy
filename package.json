@@ -17,7 +17,7 @@
     "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach"
   },
   "bin": {
-    "setup": "(pm2 delete printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save"
+    "setup": "./bin/setup.js"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.10",
