@@ -13,9 +13,9 @@
     "html-assets": "htmlassets --vimeo=$VIMEO_TOKEN",
     "minify-html": "minify -r --match=\\.html -o ./build/static ./build/static/*",
     "prod": "npm run build && npm run prod-api",
-    "prod-api": "(pm2 stop printboy || true) && pm2 start build/index.js --name=printboy",
+    "prod-api": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy",
     "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
-    "setup": "(pm2 stop printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save"
+    "setup": "(pm2 delete printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.10",
