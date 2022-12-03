@@ -14,7 +14,7 @@
     "minify-html": "minify -r --match=\\.html -o ./build/static ./build/static/*",
     "prod": "npm run build && npm run prod-api",
     "prod-api": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy",
-    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
+    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach"
   },
   "bin": {
     "install": "(pm2 delete printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save"
