@@ -38,14 +38,7 @@ A lot of this is from these articles:
 ### Install printboy
 
 1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
-1. Clone this repo
-1. Run `npm install`
-1. Run `npm run build`
-1. [Configure global NPM](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
-1. Run `npm install -g pm2`
-1. Run `pm2 start ./build/index.js --name="printboy"`
-1. Run `pm2 startup systemd` follow the steps
-1. Run `pm2 save`
+1. Run `npx --package=@gauntface/printboy install`
 
 #### Optional: Install Reverse Proxy
 
@@ -57,7 +50,7 @@ A lot of this is from these articles:
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 # try_files $uri $uri/ =404;
-                proxy_pass http://localhost:3000;
+                proxy_pass http://localhost:1314;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';
