@@ -2,7 +2,7 @@
   "name": "@gauntface/printboy",
   "version": "0.0.7",
   "scripts": {
-    "build": "npm run clean && cp -r api/. build && cp -r bin build  && npm run build-hugo && npm run process-html",
+    "build": "npm run clean && cp -r api/. build && npm run build-hugo && npm run process-html",
     "build-hugo": "npm run drac && hugo && rm -rf tmp && cp -r build/static tmp",
     "build-quick": "npm run clean && cp -r tmp build/static && npm run process-html",
     "clean": "rm -rf build && mkdir -p build",
@@ -14,10 +14,11 @@
     "minify-html": "minify -r --match=\\.html -o ./build/static ./build/static/*",
     "prod": "npm run build && npm run prod-api",
     "prod-api": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy",
-    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach"
+    "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
+    "setup": "(pm2 delete printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save"
   },
   "bin": {
-    "setup": "./bin/setup.js"
+    "setup": "./setup.sh"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.10",
