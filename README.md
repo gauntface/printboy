@@ -52,6 +52,7 @@ A lot of this is from these articles:
 1. Run `npm install @gauntface/printboy`
 1. Run `cd node_modules/@gauntface/printboy`
 1. Run `npm run setup`
+1. **Look at the output for the pm2 command to setup startup**
 
 #### Optional: Install Reverse Proxy
 
