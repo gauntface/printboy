@@ -1,1 +1,0 @@
-.drac-bg-animated{animation:animated-gradient 6s ease infinite alternate;background-image:linear-gradient(135deg,#ffca80,#ffff80,#ff9580,#ff80bf,#9580ff,#80ffea,#8aff80);background-size:300% 300%;content:""}@keyframes animated-gradient{0%{background-position:0 50%}50%{background-position:100% 50%}to{background-position:0 50%}}

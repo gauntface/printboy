@@ -38,7 +38,9 @@ A lot of this is from these articles:
 ### Install printboy
 
 1. [Install node](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
-1. Run `npx @gauntface/printboy setup`
+1. Run `npm install @gauntface/printboy`
+1. Run `cd node_modules/@gauntface/printboy`
+1. Run `npm run setup`
 
 #### Optional: Install Reverse Proxy
 
