@@ -51,12 +51,7 @@ app.delete('/api/labels/images', async (req, res) => {
 });
 
 app.post('/api/labels/images', async (req, res) => {
-  if (!req.body['form-url']) {
-    res.redirect(`${req.headers.referer}/`);
-    return;
-  }
-
-  const redirect = `${req.headers.referer}${req.body['form-url']}`;
+  const redirect = req.headers.referer || '/';
   if (!req.files || !req.files['upload-image']) {
     res.redirect(redirect);
     return;
@@ -86,12 +81,7 @@ app.delete('/api/labels/titles', async (req, res) => {
 });
 
 app.post('/api/labels/titles', async (req, res) => {
-  if (!req.body['form-url']) {
-    res.redirect(`${req.headers.referer}/`);
-    return;
-  }
-
-  const redirect = `${req.headers.referer}${req.body['form-url']}`;
+  const redirect = req.headers.referer || '/';
   if (!req.body || !req.body.title) {
     res.redirect(redirect);
     return;
@@ -121,12 +111,7 @@ app.delete('/api/labels/addresses', async (req, res) => {
 });
 
 app.post('/api/labels/addresses', async (req, res) => {
-  if (!req.body['form-url']) {
-    res.redirect(`${req.headers.referer}/`);
-    return;
-  }
-
-  const redirect = `${req.headers.referer}${req.body['form-url']}`;
+  const redirect = req.headers.referer || '/';
   if (!req.body || !req.body.address) {
     res.redirect(redirect);
     return;
