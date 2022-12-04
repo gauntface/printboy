@@ -9,7 +9,7 @@ be altered and improved for your use-cases.
 It works by "generating" a label on a HTML canvas which is saved
 as a png and then printed via an `lp` command.
 
-![Printboy](printboy-screenshot)
+![Printboy](printboy-screenshot.png)
 
 ## Setup
 
