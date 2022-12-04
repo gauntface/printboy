@@ -22,8 +22,6 @@ async function run() {
 	for (const preset of presets) {
 		const canvas = document.createElement('canvas');
 		canvas.classList.add('c-label-preview');
-		canvas.setAttribute("width-inches", "3");
-		canvas.setAttribute("height-inches", "1.125");
 		labelsContainer.appendChild(canvas);
 
 		const lp = new LabelPreview(canvas);

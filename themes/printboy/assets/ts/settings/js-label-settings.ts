@@ -19,8 +19,6 @@ async function run() {
 
         const canvas = document.createElement('canvas');
 				canvas.classList.add('c-label-preview');
-				canvas.setAttribute("width-inches", "3");
-				canvas.setAttribute("height-inches", "1.125");
 				tdTitle.appendChild(canvas);
 
 				const lp = new LabelPreview(canvas);

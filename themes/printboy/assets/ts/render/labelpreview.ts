@@ -1,4 +1,5 @@
 import { TextGroup } from './textgroup';
+import {apiDomain} from '../config';
 
 export class LabelPreview {
 	private _canvas: HTMLCanvasElement;
@@ -16,20 +17,19 @@ export class LabelPreview {
 					throw new Error('Failed to get a 2d context');
 			}
 			this._context = context;
-			const wi = this._canvas.getAttribute("width-inches");
-			if (!wi) {
-					throw new Error('width-inches not defined on the canvas element');
-			}
-			const hi = this._canvas.getAttribute("height-inches");
-			if (!hi) {
-					throw new Error('height-inches not defined on the canvas element');
-			}
-			this._widthInInches = Number(wi);
-			this._heightInInches = Number(hi);
-			this._canvas.width = Math.floor(this._widthInInches * 300);
-			this._canvas.height = Math.floor(this._heightInInches * 300);
-
 			this._canvas['labelPreview'] = this;
+
+			this.setup();
+	}
+
+	async setup() {
+		const resp = await fetch(`${apiDomain}/api/labels/current-paper`);
+		const paper = await resp.json();
+		this._widthInInches = Number(paper.widthInInches);
+		this._heightInInches = Number(paper.heightInInches);
+		this._canvas.width = Math.floor(this._widthInInches * 300);
+		this._canvas.height = Math.floor(this._heightInInches * 300);
+		this.refresh();
 	}
 
 	labelAsBase64() {

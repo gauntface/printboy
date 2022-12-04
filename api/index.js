@@ -5,6 +5,7 @@ import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-im
 import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
 import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
 import {getPresetLabels, addLabel, deletePresetLabel} from './models/saved-labels.js';
+import {setCurrentPaperSize, getCurrentPaperSize, getAllPaperSizes} from './models/paper.js';
 import {exec} from 'node:child_process';
 import util from 'util';
 import os from 'os';
@@ -219,6 +220,39 @@ app.delete('/api/labels/presets', async (req, res) => {
   }
   await deletePresetLabel(req.body.filename);
   res.json({});
+});
+
+app.get('/api/labels/papers', async (req, res) => {
+  res.json(await getAllPaperSizes());
+});
+
+app.get('/api/labels/current-paper', async (req, res) => {
+  res.json(await getCurrentPaperSize());
+});
+
+app.post('/api/labels/current-paper', async (req, res) => {
+  if (!req.body) {
+    res.status(500);
+    res.json({
+      error: {
+        msg: 'Body required',
+      },
+    });
+    return;
+  }
+
+  try {
+    const { paperID } = req.body;
+    await setCurrentPaperSize(paperID);
+    res.json({});
+  } catch (err) {
+    res.status(400);
+    res.json({
+      error: {
+        msg: `Failed to save label: ${err}`,
+      },
+    });
+  }
 });
 
 app.listen(port, () => {
