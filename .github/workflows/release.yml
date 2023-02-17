@@ -22,20 +22,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # Get the code
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
       with:
         submodules: true
 
     # Setup environment
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # v3
       with:
         go-version: '^1.18.3'
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
       with:
         registry-url: https://registry.npmjs.org/
     - name: Install Hugo
-      uses: peaceiris/actions-hugo@v2
+      uses: peaceiris/actions-hugo@16361eb4acea8698b220b76c0d4e84e1fd22c61d # v2
       with:
         hugo-version: '0.101.0'
 
@@ -72,7 +72,7 @@ jobs:
         npm publish --access public
 
     - name: Commit any package.json changes 📌
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4
       with:
         commit_message: "Releasing ${{ steps.version.outputs.VERSION }}"
         file_pattern: 'package.json'
@@ -83,7 +83,7 @@ jobs:
         tar -zcvf ../printboy-v${{ steps.version.outputs.VERSION }}.tar.gz .
 
     - name: Create release on GitHub 📦
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1
       with:
         tag: v${{ steps.version.outputs.VERSION }}
         generateReleaseNotes: true
