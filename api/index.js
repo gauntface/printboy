@@ -1,19 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
-import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-images.js';
-import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
-import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
-import {getPresetLabels, addLabel, deletePresetLabel} from './models/saved-labels.js';
-import {setCurrentPaperSize, getCurrentPaperSize, getAllPaperSizes} from './models/paper.js';
 import {exec} from 'node:child_process';
 import util from 'util';
-import os from 'os';
-import {mkdtemp, writeFile} from 'node:fs/promises';
 import path from 'path';
 import { URL } from 'url';
 import yargs from 'yargs/yargs';
 import {hideBin} from 'yargs/helpers';
+import {saveLabelAPI} from './endpoints/labels.js';
 
 const argv = yargs(hideBin(process.argv)).argv
 
@@ -33,6 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
+app.post('/api/labels', saveLabelAPI);
+
+/*
 app.get('/api/labels/images', async (req, res) => {
   res.json(await getPresetImages());
 });
@@ -253,7 +250,7 @@ app.post('/api/labels/current-paper', async (req, res) => {
       },
     });
   }
-});
+});*/
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
