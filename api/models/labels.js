@@ -1,9 +1,7 @@
 import path from 'path';
 import {writeFile} from 'node:fs/promises';
-import {pathForLabelSettings} from './constants.js';
+import {pathForLabels} from './constants.js';
 import {hashForValue} from '../utils/files.js';
-
-const PRESET_LABELS_DIR = 'preset-labels';
 
 /*
 export async function getPresetLabels() {
@@ -22,7 +20,7 @@ export async function getPresetLabels() {
 }
 */
 
-export async function saveLabel(newLabelData, wf = writeFile, hv = hashForValue) {
+export async function saveLabel(newLabelData) {
 	if (!newLabelData) {
 		throw new Error('No label input given');
 	}
@@ -41,9 +39,9 @@ export async function saveLabel(newLabelData, wf = writeFile, hv = hashForValue)
 	}
 
 	const d = JSON.stringify(data);
-	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
-	const filename = `${hv(d)}.json`;
-	await wf(path.join(p, filename), d);
+	const p = await pathForLabels();
+	const filename = `${hashForValue(d)}.json`;
+	await writeFile(path.join(p, filename), d);
 }
 
 /*

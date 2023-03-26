@@ -2,8 +2,12 @@ import path from 'path';
 import os from 'os';
 import {mkdir} from 'node:fs/promises';
 
-export async function pathForLabelSettings(dir) {
-    const p = path.join(os.homedir(), '.printboy', 'labels', dir);
+function getConfigDir() {
+  return process.env['PRINTBOY_CONFIG_DIR'] || path.join(os.homedir(), '.printboy');
+}
+
+export async function pathForLabels() {
+    const p = path.join(getConfigDir(), 'labels');
     await mkdir(p, { recursive: true });
     return p;
 }
