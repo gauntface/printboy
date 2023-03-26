@@ -4,7 +4,7 @@ import path from 'path';
 import { URL } from 'url';
 import exp from 'express';
 
-import {saveLabelAPI, getLabelAPI, deleteLabelAPI} from './endpoints/labels.js';
+import {saveLabelAPI, getLabelsAPI, deleteLabelAPI} from './endpoints/labels.js';
 import {getPaperSizesAPI, savePaperSizeAPI, getPaperSizeAPI} from './endpoints/printer.js';
 import { printAPI } from './endpoints/print.js';
 import { express } from './utils/express.js';
@@ -18,19 +18,20 @@ export function createApp(args) {
       origin: args.cors,
     }))
   }
+
   app.use(fileUpload());
   app.use(exp.urlencoded({ extended: true }));
   app.use(exp.json({ extended: true }));
   app.use(exp.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
   app.postAsync('/api/label', saveLabelAPI);
-  app.get('/api/label', getLabelAPI);
-  app.delete('/api/label', deleteLabelAPI);
+  app.getAsync('/api/labels', getLabelsAPI);
+  app.deleteAsync('/api/label', deleteLabelAPI);
 
 
-  app.get('/api/printer/sizes', getPaperSizesAPI);
+  app.getAsync('/api/printer/sizes', getPaperSizesAPI);
   app.postAsync('/api/printer/size', savePaperSizeAPI);
-  app.get('/api/printer/size', getPaperSizeAPI);
+  app.getAsync('/api/printer/size', getPaperSizeAPI);
 
   app.postAsync('/api/print', printAPI);
 

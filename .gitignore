@@ -4,3 +4,4 @@ node_modules
 static/third_party/dracula-ui/
 tmp/
 resources/
+coverage/

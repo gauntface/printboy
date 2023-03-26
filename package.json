@@ -16,7 +16,7 @@
     "prod-api": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy",
     "prod-api-attach": "(pm2 delete printboy || true) && pm2 start build/index.js --name=printboy --attach",
     "setup": "(pm2 delete printboy || true) && pm2 start index.js --name=printboy && pm2 startup systemd && pm2 save",
-    "test": "c8 --all ava tests/**/test_*.js"
+    "test": "c8 --all ava 'tests/**/test_*.js'"
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.11",

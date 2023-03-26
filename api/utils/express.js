@@ -11,6 +11,24 @@ export function express() {
       }
     });
   };
+  app['getAsync'] = (p, fn) => {
+    app.get(p, async (req, res, next) => {
+      try {
+        await fn(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    });
+  };
+  app['deleteAsync'] = (p, fn) => {
+    app.delete(p, async (req, res, next) => {
+      try {
+        await fn(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    });
+  };
 
   return app;
 }

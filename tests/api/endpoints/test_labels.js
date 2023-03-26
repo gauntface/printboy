@@ -3,6 +3,7 @@ import test from 'ava';
 import { initTmpConfigDir } from '../../../test_utils/tmpdir.js';
 
 import { createApp } from "../../../api/server.js";
+import { hashForValue } from '../../../api/utils/files.js';
 
 let server;
 let serverAddr;
@@ -62,6 +63,116 @@ test.serial('saveLabelAPI: save label with valid body', async (t) => {
 			'Content-Type': 'application/json',
 		},
     body: JSON.stringify({ title: 'example title'}),
+  })
+  t.deepEqual(res.status, 200);
+
+  const body = await res.json();
+  t.deepEqual(body, {});
+});
+
+test.serial('getLabelsAPI: get no labels', async (t) => {
+  await initTmpConfigDir();
+
+  const res = await fetch(`${serverAddr}/api/labels`, {
+    method: 'get',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+  })
+  t.deepEqual(res.status, 200);
+
+  const body = await res.json();
+  t.deepEqual(body, []);
+});
+
+test.serial('getLabelsAPI: get saved labels', async (t) => {
+  await initTmpConfigDir();
+
+  const label = { title: 'example label' };
+
+  const saveRes = await fetch(`${serverAddr}/api/label`, {
+    method: 'post',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+    body: JSON.stringify(label),
+  })
+  t.deepEqual(saveRes.status, 200);
+
+  const res = await fetch(`${serverAddr}/api/labels`, {
+    method: 'get',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+  })
+  t.deepEqual(res.status, 200);
+
+  const body = await res.json();
+  t.deepEqual(body, [
+    {
+      title: 'example label',
+      filename: `${hashForValue(JSON.stringify(label))}.json`
+    },
+  ]);
+});
+
+test.serial('deleteLabelAPI: return error when no filename', async (t) => {
+  await initTmpConfigDir();
+
+  const label = { title: 'example label' };
+
+  const res = await fetch(`${serverAddr}/api/label`, {
+    method: 'delete',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+  })
+  t.deepEqual(res.status, 400);
+
+  const body = await res.json();
+  t.truthy(body.error);
+  t.assert(body.error.msg.includes(`Post body with 'filename' is required.`));
+});
+
+test.serial('deleteLabelAPI: return error when deleting non-existant label', async (t) => {
+  await initTmpConfigDir();
+
+  const label = { title: 'example label' };
+
+  const res = await fetch(`${serverAddr}/api/label`, {
+    method: 'delete',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+    body: JSON.stringify({ filename: `${hashForValue(JSON.stringify(label))}.json` }),
+  })
+  t.deepEqual(res.status, 500);
+
+  const body = await res.json();
+  t.truthy(body.error);
+  t.assert(body.error.msg.includes(`Label file \'${hashForValue(JSON.stringify(label))}.json\' does not exist`));
+});
+
+test.serial('deleteLabelAPI: delete saved labels', async (t) => {
+  await initTmpConfigDir();
+
+  const label = { title: 'example label' };
+
+  const saveRes = await fetch(`${serverAddr}/api/label`, {
+    method: 'post',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+    body: JSON.stringify(label),
+  })
+  t.deepEqual(saveRes.status, 200);
+
+  const res = await fetch(`${serverAddr}/api/label`, {
+    method: 'delete',
+    headers: {
+			'Content-Type': 'application/json',
+		},
+    body: JSON.stringify({ filename: `${hashForValue(JSON.stringify(label))}.json` }),
   })
   t.deepEqual(res.status, 200);
 
