@@ -1,6 +1,7 @@
 import path from 'path';
-import {stat, readFile, writeFile} from 'node:fs/promises';
+import {readFile, writeFile} from 'node:fs/promises';
 import {getConfigDir} from './config.js';
+import { exists } from '../utils/files.js';
 
 const PAPER_DIR = 'paper-size';
 
@@ -26,7 +27,7 @@ export async function getAllPaperSizes() {
 	return Array.from(Object.values(copy));
 }
 
-export async function setCurrentPaperSize(paperID) {
+export async function saveCurrentPaperSize(paperID) {
 	if (!PAPER_SIZES[paperID]) {
 		throw new Error(`Invalid paper ID: '${paperID}'`);
 	}
@@ -48,14 +49,4 @@ export async function getCurrentPaperSize() {
 	}
 
 	return PAPER_SIZES[30252];
-}
-
-async function exists(filepath) {
-	try {
-		await stat(filepath);
-		return true;
-	} catch (err) {
-		// Noop
-	}
-	return false;
 }

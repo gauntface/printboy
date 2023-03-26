@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { initTmpConfigDir } from '../../../test_utils/tmpdir.js';
 
-import { getAllPaperSizes, setCurrentPaperSize, getCurrentPaperSize } from '../../../api/models/paper.js';
+import { getAllPaperSizes, saveCurrentPaperSize, getCurrentPaperSize } from '../../../api/models/paper.js';
 import { ENV_CONFIG_DIR } from '../../../api/models/config.js';
 
 test.beforeEach(() => {
@@ -31,7 +31,7 @@ test.serial('getAllPaperSizes: return labels with default current', async (t) =>
 test.serial('getAllPaperSizes: return labels with defined current', async (t) => {
   await initTmpConfigDir();
 
-  await setCurrentPaperSize('30364');
+  await saveCurrentPaperSize('30364');
 
   const got = await getAllPaperSizes();
   t.deepEqual(got, [
@@ -66,7 +66,7 @@ test.serial('getCurrentPaperSize: return default size', async (t) => {
 test.serial('getCurrentPaperSize: return configured size', async (t) => {
   await initTmpConfigDir();
 
-  await setCurrentPaperSize('30364');
+  await saveCurrentPaperSize('30364');
 
   const got = await getCurrentPaperSize();
   t.deepEqual(got,
@@ -79,8 +79,8 @@ test.serial('getCurrentPaperSize: return configured size', async (t) => {
   );
 });
 
-test.serial('setCurrentPaperSize: fail if setting size to unknown value', async (t) => {
+test.serial('saveCurrentPaperSize: fail if setting size to unknown value', async (t) => {
   await t.throwsAsync(async () => {
-    await setCurrentPaperSize('does-not-exist');
+    await saveCurrentPaperSize('does-not-exist');
   }, { message: 'Invalid paper ID: \'does-not-exist\'' });
 });

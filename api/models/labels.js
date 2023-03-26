@@ -1,7 +1,7 @@
 import path from 'path';
-import {readFile, writeFile, readdir} from 'node:fs/promises';
+import {readFile, writeFile, readdir, rm} from 'node:fs/promises';
 import {getConfigDir} from './config.js';
-import {hashForValue} from '../utils/files.js';
+import {exists, hashForValue} from '../utils/files.js';
 
 export const LABEL_DIR = 'labels';
 
@@ -44,9 +44,10 @@ export async function saveLabel(newLabelData) {
 	await writeFile(path.join(p, filename), d);
 }
 
-/*
-export async function deletePresetLabel(filename) {
-	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
-	await rm(path.join(p, filename));
+export async function deleteSavedLabel(filename) {
+	const f = path.join(await getConfigDir(LABEL_DIR), filename);
+	if (!(await exists(f))) {
+		throw new Error(`Label file '${filename}' does not exist`);
+	}
+	await rm(f);
 }
-*/

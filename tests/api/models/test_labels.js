@@ -6,7 +6,7 @@ import * as path from 'path';
 import { initTmpConfigDir } from '../../../test_utils/tmpdir.js';
 
 import { ENV_CONFIG_DIR, getConfigDir } from '../../../api/models/config.js';
-import { LABEL_DIR, saveLabel, getSavedLabels } from '../../../api/models/labels.js';
+import { LABEL_DIR, saveLabel, getSavedLabels, deleteSavedLabel } from '../../../api/models/labels.js';
 import { hashForValue } from '../../../api/utils/files.js';
 
 test.beforeEach(() => {
@@ -88,4 +88,28 @@ test.serial('getSavedLabels: return example labels', async (t) => {
   want.sort((a, b) => a.title.localeCompare(b.title));
 
   t.deepEqual(got, want);
+});
+
+test.serial('deleteLabelAPI: throw for non-existant label', async (t) => {
+  await initTmpConfigDir();
+
+  await t.throwsAsync(async () => {
+    await deleteSavedLabel('this-does-not-exist');
+  }, { message: 'Label file \'this-does-not-exist\' does not exist' });
+});
+
+test.serial('deleteLabelAPI: delete label', async (t) => {
+  await initTmpConfigDir();
+
+  await saveLabel({
+    title: '1',
+  });
+
+  let labels = await getSavedLabels();
+  t.assert(labels.length === 1);
+
+  await deleteSavedLabel(labels[0].filename);
+
+  labels = await getSavedLabels();
+  t.assert(labels.length === 0);
 });
