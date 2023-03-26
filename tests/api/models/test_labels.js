@@ -5,7 +5,13 @@ import * as path from 'path';
 import * as os from 'os';
 
 import { pathForLabels } from '../../../api/models/constants.js';
-import { saveLabel } from '../../../api/models/labels.js';
+import { saveLabel, getSavedLabels } from '../../../api/models/labels.js';
+import { hashForValue } from '../../../api/utils/files.js';
+
+async function initTmpDir() {
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'printboy-tests-'));
+  process.env['PRINTBOY_CONFIG_DIR'] = tmpDir;
+}
 
 test('saveLabel: no input', async (t) => {
   await t.throwsAsync(async () => {
@@ -20,7 +26,7 @@ test('saveLabel: no expected fields', async (t) => {
 });
 
 test.serial('saveLabel: save file with one field', async (t) => {
-  await initConfigDir();
+  await initTmpDir();
 
   const input = { title: 'example-title' };
   await saveLabel(input);
@@ -34,7 +40,7 @@ test.serial('saveLabel: save file with one field', async (t) => {
 });
 
 test.serial('saveLabel: save file with all fields', async (t) => {
-  await initConfigDir();
+  await initTmpDir();
 
   const input = { title: 'example-title', body: 'example-body', image: 'example-image' };
   await saveLabel(Object.assign({}, input, {extraField: 'example-extra'}));
@@ -47,7 +53,39 @@ test.serial('saveLabel: save file with all fields', async (t) => {
   t.deepEqual(labelConfig.toString(), JSON.stringify(input));
 });
 
-async function initConfigDir() {
-  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'printboy-tests-'));
-  process.env['PRINTBOY_CONFIG_DIR'] = tmpDir;
-}
+test.serial('getSavedLabels: return no labels', async (t) => {
+  await initTmpDir();
+
+  const got = await getSavedLabels();
+  t.deepEqual(got, []);
+});
+
+test.serial('getSavedLabels: return example labels', async (t) => {
+  await initTmpDir();
+
+  const want = [
+    {
+      title: '1',
+    },
+    {
+      title: '2',
+      body: '2',
+    },
+    {
+      title: '3',
+      body: '3',
+      image: '3',
+    },
+  ];
+  for (let i = 0; i < want.length; i++) {
+    want[i].filename = `${hashForValue(JSON.stringify(want[i]))}.json`;
+    await saveLabel(want[i]);
+  }
+
+  const got = await getSavedLabels();
+
+  got.sort((a, b) => a.title.localeCompare(b.title));
+  want.sort((a, b) => a.title.localeCompare(b.title));
+
+  t.deepEqual(got, want);
+});

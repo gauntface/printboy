@@ -1,11 +1,10 @@
 import path from 'path';
-import {writeFile} from 'node:fs/promises';
+import {readFile, writeFile, readdir} from 'node:fs/promises';
 import {pathForLabels} from './constants.js';
 import {hashForValue} from '../utils/files.js';
 
-/*
-export async function getPresetLabels() {
-	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
+export async function getSavedLabels() {
+	const p = await pathForLabels();
 	const values = [];
 	const files = await readdir(p);
 	for (const filename of files) {
@@ -18,7 +17,6 @@ export async function getPresetLabels() {
 	}
 	return values
 }
-*/
 
 export async function saveLabel(newLabelData) {
 	if (!newLabelData) {

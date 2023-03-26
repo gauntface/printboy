@@ -7,7 +7,7 @@ import path from 'path';
 import { URL } from 'url';
 import yargs from 'yargs/yargs';
 import {hideBin} from 'yargs/helpers';
-import {saveLabelAPI} from './endpoints/labels.js';
+import {saveLabelAPI, getLabelAPI} from './endpoints/labels.js';
 
 const argv = yargs(hideBin(process.argv)).argv
 
@@ -28,6 +28,8 @@ app.use(express.json({ extended: true }));
 app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
 app.post('/api/labels', saveLabelAPI);
+
+app.get('/api/labels', getLabelAPI);
 
 /*
 app.get('/api/labels/images', async (req, res) => {
@@ -251,6 +253,19 @@ app.post('/api/labels/current-paper', async (req, res) => {
     });
   }
 });*/
+
+// Error handler
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(500);
+  res.json({
+    error: {
+      msg: `Unexpected error occurred: ${err}`,
+    },
+  });
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
