@@ -22,7 +22,7 @@ export async function getPresetLabels() {
 }
 */
 
-export async function saveLabel(newLabelData) {
+export async function saveLabel(newLabelData, wf = writeFile, hv = hashForValue) {
 	if (!newLabelData) {
 		throw new Error('No label input given');
 	}
@@ -42,8 +42,8 @@ export async function saveLabel(newLabelData) {
 
 	const d = JSON.stringify(data);
 	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
-	const filename = `${hashForValue(d)}.json`;
-	await writeFile(path.join(p, filename), d);
+	const filename = `${hv(d)}.json`;
+	await wf(path.join(p, filename), d);
 }
 
 /*
