@@ -4,19 +4,14 @@ import * as os from 'os';
 import {exec} from 'node:child_process';
 import {promisify} from 'util';
 
-const execP = promisify(exec);
+// Exported so tests can mock the behavior
+let execP = promisify(exec);
+
+export function overrideExec(fn) {
+  execP = fn
+}
 
 export async function printAPI(req, res) {
-  if (!req.body) {
-    res.status(400);
-    res.json({
-      error: {
-        msg: 'Post body is required.',
-      }
-    });
-    return;
-  }
-
   const { copies, base64, widthInches, heightInches } = req.body;
   if (copies < 1) {
     res.status(500);
