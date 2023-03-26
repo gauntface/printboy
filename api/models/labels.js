@@ -1,10 +1,12 @@
 import path from 'path';
 import {readFile, writeFile, readdir} from 'node:fs/promises';
-import {pathForLabels} from './constants.js';
+import {getConfigDir} from './config.js';
 import {hashForValue} from '../utils/files.js';
 
+export const LABEL_DIR = 'labels';
+
 export async function getSavedLabels() {
-	const p = await pathForLabels();
+	const p = await getConfigDir(LABEL_DIR);
 	const values = [];
 	const files = await readdir(p);
 	for (const filename of files) {
@@ -37,7 +39,7 @@ export async function saveLabel(newLabelData) {
 	}
 
 	const d = JSON.stringify(data);
-	const p = await pathForLabels();
+	const p = await getConfigDir(LABEL_DIR);
 	const filename = `${hashForValue(d)}.json`;
 	await writeFile(path.join(p, filename), d);
 }

@@ -1,6 +1,6 @@
 import path from 'path';
-import {writeFile, readdir, readFile, rm} from 'node:fs/promises';
-import {pathForLabelSettings} from './constants.js';
+import {stat, readFile, writeFile} from 'node:fs/promises';
+import {getConfigDir} from './config.js';
 
 const PAPER_DIR = 'paper-size';
 
@@ -20,34 +20,42 @@ const PAPER_SIZES = {
 };
 
 export async function getAllPaperSizes() {
-	const papers = Array.from(Object.values(PAPER_SIZES));
+	const copy = structuredClone(PAPER_SIZES);
 	const current = await getCurrentPaperSize();
-	for (let i = 0; i < papers.length; i++) {
-		papers[i].current = (papers[i].id == current.id);
-	}
-	return papers;
+	copy[current.id].current = true;
+	return Array.from(Object.values(copy));
 }
 
 export async function setCurrentPaperSize(paperID) {
 	if (!PAPER_SIZES[paperID]) {
-		throw new Error(`Invalid paper ID '${paperID}'`);
+		throw new Error(`Invalid paper ID: '${paperID}'`);
 	}
 
-	const addressesPath = await pathForLabelSettings(PAPER_DIR);
+	const addressesPath = await getConfigDir(PAPER_DIR);
 	const filepath = path.join(addressesPath, 'current.json');
 	await writeFile(filepath, JSON.stringify({id: paperID}));
 }
 
 export async function getCurrentPaperSize() {
-	const addressesPath = await pathForLabelSettings(PAPER_DIR);
-	try {
-		const filepath = path.join(addressesPath, 'current.json');
+	const addressesPath = await getConfigDir(PAPER_DIR);
+	const filepath = path.join(addressesPath, 'current.json');
+
+	if (await exists(filepath)) {
 		const current = JSON.parse((await readFile(filepath)).toString());
 		if (PAPER_SIZES[current.id]) {
 			return PAPER_SIZES[current.id];
 		}
-	} catch (err) {
-		console.warn('Failed to get current paper size: ', err);
 	}
+
 	return PAPER_SIZES[30252];
+}
+
+async function exists(filepath) {
+	try {
+		await stat(filepath);
+		return true;
+	} catch (err) {
+		// Noop
+	}
+	return false;
 }

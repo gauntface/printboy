@@ -8,6 +8,7 @@ import { URL } from 'url';
 import yargs from 'yargs/yargs';
 import {hideBin} from 'yargs/helpers';
 import {saveLabelAPI, getLabelAPI} from './endpoints/labels.js';
+import {getPaperSizesAPI} from './endpoints/print.js';
 
 const argv = yargs(hideBin(process.argv)).argv
 
@@ -30,6 +31,8 @@ app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static
 app.post('/api/labels', saveLabelAPI);
 
 app.get('/api/labels', getLabelAPI);
+
+app.get('/api/print/sizes', getPaperSizesAPI);
 
 /*
 app.get('/api/labels/images', async (req, res) => {
@@ -219,10 +222,6 @@ app.delete('/api/labels/presets', async (req, res) => {
   }
   await deletePresetLabel(req.body.filename);
   res.json({});
-});
-
-app.get('/api/labels/papers', async (req, res) => {
-  res.json(await getAllPaperSizes());
 });
 
 app.get('/api/labels/current-paper', async (req, res) => {
