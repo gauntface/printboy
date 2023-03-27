@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@gauntface/dracula-ui": "^0.0.11",
-    "cssnano": "^5.1.14",
+    "cssnano": "^6.0.0",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.0.1",
     "postcss-preset-env": "^8.0.0"
