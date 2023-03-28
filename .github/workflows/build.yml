@@ -41,3 +41,9 @@ jobs:
         go install github.com/tdewolff/minify/v2/cmd/minify@latest
     - name: Build 🔧
       run: npm run build
+
+    - name: Test 🧪
+      run: npm run test
+
+    - name: Coveralls Upload ⬆️
+      uses: coverallsapp/github-action@v2.0.0
