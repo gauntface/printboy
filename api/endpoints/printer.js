@@ -5,17 +5,17 @@ export async function getPaperSizesAPI(req, res) {
 }
 
 export async function savePaperSizeAPI(req, res) {
-  if (!req.body) {
+  if (!req.body['paper_id']) {
     res.status(400);
     res.json({
       error: {
-        msg: 'Post body is required.',
+        msg: 'Post body with \'paper_id\' is required.',
       }
     });
     return;
   }
 
-  await saveCurrentPaperSize(req.body);
+  await saveCurrentPaperSize(req.body['paper_id']);
   res.json({});
 }
 
