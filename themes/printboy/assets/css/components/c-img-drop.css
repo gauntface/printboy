@@ -1,0 +1,20 @@
+.c-img-drop {
+  display: block;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: var(--grey);
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-image: url('/images/image_alt.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.c-img-drop--active {
+  border-width: 3px;
+}
+
+.c-img-drop > input {
+  display: none;
+}

@@ -33,11 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
-app.get('/api/labels/images', async (req, res) => {
+app.get('/api/label/images', async (req, res) => {
   res.json(await getPresetImages());
 });
 
-app.delete('/api/labels/images', async (req, res) => {
+app.delete('/api/label/image', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({
@@ -51,7 +51,7 @@ app.delete('/api/labels/images', async (req, res) => {
   res.json({});
 });
 
-app.post('/api/labels/images', async (req, res) => {
+app.post('/api/label/images', async (req, res) => {
   const redirect = req.headers.referer || '/';
   if (!req.files || !req.files['upload-image']) {
     res.redirect(redirect);
@@ -179,11 +179,11 @@ app.post('/api/print', async (req, res) => {
   res.json({});
 });
 
-app.get('/api/labels/presets', async (req, res) => {
+app.get('/api/labels', async (req, res) => {
   res.json(await getPresetLabels());
 });
 
-app.post('/api/labels/presets', async (req, res) => {
+app.post('/api/label', async (req, res) => {
   if (!req.body) {
     res.status(500);
     res.json({
@@ -208,7 +208,7 @@ app.post('/api/labels/presets', async (req, res) => {
   }
 });
 
-app.delete('/api/labels/presets', async (req, res) => {
+app.delete('/api/label', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({

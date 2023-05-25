@@ -1,4 +1,10 @@
 {{ define "main" }}
+
+<header>
+	<img src="/images/logo.svg" alt="Printboy logo" />
+	<h1><a href="/">Printboy</a></h1>
+</header>
+
 {{ partial "layouts/l-default-open.html" . }}
 {{.Content}}
 {{ partial "layouts/l-default-close.html" . }}

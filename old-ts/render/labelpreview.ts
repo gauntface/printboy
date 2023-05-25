@@ -1,5 +1,5 @@
 import { TextGroup } from './textgroup';
-import {apiDomain} from '../config';
+import {apiDomain} from '../../themes/printboy/assets/ts/config';
 
 export class LabelPreview {
 	private _canvas: HTMLCanvasElement;

@@ -1,0 +1,3 @@
+input[type="text"] {
+  padding: var(--m-padding);
+}
