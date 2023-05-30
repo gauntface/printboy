@@ -185,19 +185,22 @@ app.get('/api/labels', async (req, res) => {
 
 app.post('/api/label', async (req, res) => {
   if (!req.body) {
-    res.status(500);
+    res.status(400);
     res.json({
       error: {
-        msg: 'Body required',
-      },
+        msg: 'Request must contain a body.',
+      }
     });
     return;
   }
 
   try {
-    const { imageID, titleID, addressID } = req.body;
     await addLabel(req.body);
-    res.json({});
+    if (req.body.redirect) {
+      res.redirect(new URL(req.body.redirect, req.headers.referer || '/').href);
+    } else {
+      res.json({});
+    }
   } catch (err) {
     res.status(400);
     res.json({

@@ -4,6 +4,8 @@ import {getImages, LabelImage} from '../api/_images';
 import { rmElementChildren } from '../utils/_dom';
 
 const CLASSNAME_PREVIEW = 'c-imgs-list__preview';
+const CLASSNAME_LABEL = 'c-imgs-list__label';
+
 
 function setPreview(element, imgs: Array<LabelImage>) {
   rmElementChildren(element);
@@ -21,7 +23,17 @@ function setPreview(element, imgs: Array<LabelImage>) {
     wrapper.appendChild(img);
     wrapper.appendChild(c);
 
-    element.appendChild(wrapper);
+    const input = document.createElement('input');
+    input.type = "radio";
+    input.name = "imageFilename";
+    input.value = i.filename;
+
+    const label = document.createElement('label');
+    label.classList.add(CLASSNAME_LABEL);
+    label.appendChild(input);
+    label.appendChild(wrapper);
+
+    element.appendChild(label);
   }
 }
 

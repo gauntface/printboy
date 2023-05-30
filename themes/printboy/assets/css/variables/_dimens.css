@@ -1,4 +1,6 @@
 :root {
     --m-padding: 16px;
     --l-padding: 26px;
+
+    --border-radius: 6px;
 }

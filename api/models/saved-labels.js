@@ -26,31 +26,33 @@ export async function getPresetLabels() {
 export async function addLabel(newLabel) {
 	const fields = {
 		"image": {
-			dataKey: "imageFilename",
+			name: "imageFilename",
 			fn: getPresetImage,
 		},
 		"title": {
-			dataKey: "titleFilename",
-			fn: getPresetTitle,
+			name: "title",
 		},
-		"address": {
-			dataKey: "addressFilename",
-			fn: getPresetAddress,
+		"content": {
+			name: "content",
 		},
 	};
 	const data = {};
-	for (const [key, value] of Object.entries(fields)) {
-		const filename = newLabel[value.dataKey];
-		if (filename == undefined) {
-			throw new Error(`Required field '${value.dataKey}' is not defined.`);
+	for (const [key, field] of Object.entries(fields)) {
+		const value = newLabel[field.name];
+		if (value == undefined) {
+			throw new Error(`Required field '${field.name}' is not defined.`);
 		}
 
-		if (!filename) {
+		if (!value) {
 			data[key] = "";
 			continue;
 		}
 
-		data[key] = (await value.fn(filename));
+		if (field.fn) {
+			data[key] = (await field.fn(value));
+		} else {
+			data[key] = value;
+		}
 	}
 
 	// TODO: Switch to saving a snapshot of the data
