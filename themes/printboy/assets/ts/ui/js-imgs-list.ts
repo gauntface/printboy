@@ -6,7 +6,6 @@ import { rmElementChildren } from '../utils/_dom';
 const CLASSNAME_PREVIEW = 'c-imgs-list__preview';
 const CLASSNAME_LABEL = 'c-imgs-list__label';
 
-
 function setPreview(element, imgs: Array<LabelImage>) {
   rmElementChildren(element);
 

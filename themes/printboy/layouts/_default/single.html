@@ -1,9 +1,6 @@
 {{ define "main" }}
 
-<header>
-	<img src="/images/logo.svg" alt="Printboy logo" />
-	<h1><a href="/">Printboy</a></h1>
-</header>
+{{ partial "components/header.html" (dict "variant" "title") }}
 
 {{ partial "layouts/l-default-open.html" . }}
 {{.Content}}

@@ -1,10 +1,7 @@
 {{ define "main" }}
 {{ partial "layouts/l-default-open.html" . }}
 
-<header>
-	<img src="/images/logo.svg" alt="Printboy logo" />
-	<h1>Printboy</h1>
-</header>
+{{ partial "components/header.html" }}
 
 {{.Content}}
 {{ partial "layouts/l-default-close.html" . }}
