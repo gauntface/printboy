@@ -3,8 +3,9 @@ import {logger} from '@gauntface/logger';
 import {getLabels} from '../api/_labels';
 import { LabelComponent } from './label-component';
 
-const CLASSNAME_LABEL = 'c-labels-list__label';
-const CLASSNAME_LABEL_CANVAS = 'c-labels-list__label-canvas';
+const CLASSNAME_LABEL = 'l-labels-list__label';
+const CLASSNAME_IS_CLICKABLE = 'l-labels-list--clickable';
+const CLASSNAME_LABEL_CANVAS = 'l-labels-list__label-canvas';
 
 function noLabelsMessage() {
   const p = document.createElement(`p`);
@@ -26,9 +27,12 @@ async function labelsList() {
   }
 
   for(const label of labels) {
-
     const labelWrapper = document.createElement('div');
     labelWrapper.classList.add(CLASSNAME_LABEL);
+    labelWrapper.classList.add(CLASSNAME_IS_CLICKABLE);
+    labelWrapper.addEventListener('click', () => {
+      window.location.href = `/print-label/?label=${label.filename}`;
+    });
 
     const canvas = document.createElement('canvas');
 		canvas.classList.add(CLASSNAME_LABEL_CANVAS);

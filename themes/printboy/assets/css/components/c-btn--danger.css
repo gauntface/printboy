@@ -1,0 +1,4 @@
+.c-btn.c-btn--danger {
+  background: var(--red);
+  color: var(--light-grey);
+}

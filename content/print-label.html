@@ -1,7 +1,20 @@
 ---
-title: "Existing Labels"
+title: "Print Labels"
 ---
 
-<h1>Existing Labels</h1>
+<h1>Print Label</h1>
 
-<div class="l-labels-list js-labels-list"></div>
+<label>Preview</label>
+<div class="l-labels-list js-print-label"></div>
+
+<form class="l-form" method="post" encType="multipart/form-data">
+  <label for="quantity">Quantity</label>
+  <input id="quantity" name="quantity" type="number" value="1" />
+
+  <label for="size">Size</label>
+  <select name="size" id="size" class="js-paper-select-input">
+  </select>
+
+  <input type="submit" name="print" value="Print Label" class="c-btn" />
+  <input type="submit" name="delete" value="Delete Label" class="c-btn c-btn--danger" />
+</form>

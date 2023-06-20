@@ -2,5 +2,7 @@ body {
   padding: 0;
   margin: 0;
 
+  background: var(--light-grey);
+
   font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 }

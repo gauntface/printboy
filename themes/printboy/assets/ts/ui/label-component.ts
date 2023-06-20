@@ -5,9 +5,11 @@ export class LabelComponent {
   private context: CanvasRenderingContext2D;
   private widthInches: number;
   private heightInches: number;
+	private debug: boolean;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, debug = false) {
     this.canvas = canvas;
+		this.debug = debug;
     const context = canvas.getContext('2d');
 			if (!context) {
 					throw new Error('Failed to get a 2d context');
@@ -31,7 +33,7 @@ export class LabelComponent {
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    const columns = [];
+    const columns: Array<Renderer> = [];
     if (this.canvas.attributes['image']) {
       columns.push(this.imageColumn(this.canvas.attributes['image']));
     }
@@ -40,12 +42,85 @@ export class LabelComponent {
       columns.push(this.addressColumn(this.canvas.attributes['title'], this.canvas.attributes['content']));
     }
 
-    if (!columns.length) {
-      return;
+		const padding = this.canvas.height * 0.1;
+		const gap = padding;
+		const widths = this.getColumnWidths(padding, gap, columns);
+
+    if (columns.length) {
+			let left = padding;
+			const top = padding;
+			const height = this.canvas.height - (2 * padding);
+			for (let i = 0; i < columns.length; i++) {
+				const col = columns[i];
+				const colWidth = widths[i];
+				col.draw(colWidth, height, left, top);
+
+				left += colWidth + gap;
+			}
     }
+
+		this.drawDebug(padding, gap, widths);
   }
 
-  imageColumn(b64Img) {
+	getColumnWidths(padding, gap, columns) {
+		const widths: Array<number> = [];
+
+		const portions = this.getPortions(columns);
+		const portionCount = portions.reduce((pv, v) => pv + v);
+		const usableWidth = this.canvas.width - (2 * padding) - ((columns.length - 1) * gap);
+		const pw = usableWidth / portionCount;
+		for (let i = 0; i < columns.length; i++) {
+			widths.push(portions[i] * pw);
+		}
+		return widths;
+	}
+
+	drawDebug(padding, gap, widths) {
+		if (!this.debug) {
+			return;
+		}
+
+		// Draw Padding
+		this.context.beginPath();
+		this.context.fillStyle = 'rgba(155, 89, 182, 0.2)';
+		// Left
+		this.context.rect(0, 0, padding, this.canvas.height);
+		// Right
+		this.context.rect(this.canvas.width - padding, 0, padding, this.canvas.height);
+		// Top
+		this.context.rect(0, 0, this.canvas.width, padding);
+		// Bottom
+		this.context.rect(0, this.canvas.height - padding, this.canvas.width, padding);
+		this.context.fill();
+		this.context.closePath();
+
+		let left = padding;
+		const top = padding;
+		const height = this.canvas.height - (2 * padding);
+
+		for (let i = 0; i < widths.length; i++) {
+			const w = widths[i];
+			this.context.beginPath();
+			this.context.fillStyle = 'rgba(26, 188, 156, 0.2)';
+			this.context.rect(left, top, w, height);
+			this.context.fill();
+			this.context.closePath();
+
+			left += w;
+
+			if (i+1 < widths.length) {
+				this.context.beginPath();
+				this.context.fillStyle = 'rgba(231, 76, 60, 0.2)';
+				this.context.rect(left, top, gap, height);
+				this.context.fill();
+				this.context.closePath();
+
+				left += gap;
+			}
+		}
+	}
+
+  imageColumn(b64Img): Renderer {
 		return {
 			draw: async (w, h, l, t) => {
 				const img = await this.genImage(b64Img);
@@ -60,7 +135,7 @@ export class LabelComponent {
 		}
 	}
 
-  addressColumn(title: string|null, content: string|null) {
+  addressColumn(title: string|null, content: string|null): Renderer {
 		return {
 			draw: async (w, h, l, t) => {
 				const textGroups: Array<TextGroup> = [];
@@ -73,7 +148,7 @@ export class LabelComponent {
 
 				const fontSize = this.findFontSize(textGroups, w, h);
 				const measure = this.calcTextGroupSize(textGroups, fontSize);
-				let x = l + (w - measure.width);
+				let x = l;
 				let y = t + ((h - measure.height) / 2);
 				for (const tg of textGroups) {
 					const measure = tg.draw(this.context, fontSize, x, y);
@@ -162,4 +237,21 @@ export class LabelComponent {
 			i.src = b64;
 		});
 	}
+
+	getPortions(cols: Array<Renderer>) {
+		switch(cols.length) {
+			case 0:
+				return [1];
+			case 1:
+				return [1];
+			case 2:
+				return [1, 2];
+			default:
+				throw new Error(`Unexpected number of columns: ${cols.length}`);
+		}
+	}
+}
+
+interface Renderer {
+	draw: (w: number, h: number, l: number, t: number) => void;
 }

@@ -4,7 +4,7 @@ import fileUpload from 'express-fileupload';
 import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-images.js';
 import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
 import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
-import {getPresetLabels, addLabel, deletePresetLabel} from './models/saved-labels.js';
+import {getPresetLabels, addLabel, deletePresetLabel, getSavedLabel} from './models/saved-labels.js';
 import {setCurrentPaperSize, getCurrentPaperSize, getAllPaperSizes} from './models/paper.js';
 import {exec} from 'node:child_process';
 import util from 'util';
@@ -181,6 +181,11 @@ app.post('/api/print', async (req, res) => {
 
 app.get('/api/labels', async (req, res) => {
   res.json(await getPresetLabels());
+});
+
+
+app.get('/api/label/:filename', async (req, res) => {
+  res.json(await getSavedLabel(req.params.filename));
 });
 
 app.post('/api/label', async (req, res) => {

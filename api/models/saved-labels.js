@@ -23,6 +23,13 @@ export async function getPresetLabels() {
 	return values
 }
 
+export async function getSavedLabel(filename) {
+	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
+	const filepath = path.join(p, filename);
+	const label = JSON.parse((await readFile(filepath)).toString());
+	return label;
+}
+
 export async function addLabel(newLabel) {
 	const fields = {
 		"image": {
