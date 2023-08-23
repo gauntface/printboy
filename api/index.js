@@ -134,12 +134,12 @@ app.post('/api/print', async (req, res) => {
     return;
   }
 
-  const { copies, base64, widthInches, heightInches } = req.body;
-  if (copies < 1) {
+  const { quantity, base64, widthInches, heightInches } = req.body;
+  if (quantity < 1) {
     res.status(500);
     res.json({
       error: {
-        msg: 'Invalid copies value',
+        msg: 'Invalid quantity value',
       },
     });
     return;
@@ -200,9 +200,11 @@ app.post('/api/label', async (req, res) => {
   }
 
   try {
-    await addLabel(req.body);
+    const filename = await addLabel(req.body);
     if (req.body.redirect) {
-      res.redirect(new URL(req.body.redirect, req.headers.referer || '/').href);
+      const url = new URL(req.body.redirect, req.headers.referer || '/');
+      url.searchParams.set('label', filename);
+      res.redirect(url.href);
     } else {
       res.json({});
     }

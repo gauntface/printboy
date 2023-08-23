@@ -67,6 +67,7 @@ export async function addLabel(newLabel) {
 	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
 	const filename = `${hashForValue(d)}.json`;
 	await writeFile(path.join(p, filename), d);
+	return filename;
 }
 
 export async function deletePresetLabel(filename) {

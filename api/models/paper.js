@@ -1,5 +1,5 @@
 import path from 'path';
-import {writeFile, readdir, readFile, rm} from 'node:fs/promises';
+import {writeFile, readdir, readFile, mkdir} from 'node:fs/promises';
 import {pathForLabelSettings} from './constants.js';
 
 const PAPER_DIR = 'paper-size';
@@ -35,6 +35,7 @@ export async function setCurrentPaperSize(paperID) {
 
 	const addressesPath = await pathForLabelSettings(PAPER_DIR);
 	const filepath = path.join(addressesPath, 'current.json');
+	await mkdir(path.dirname(filepath), {recursive: true});
 	await writeFile(filepath, JSON.stringify({id: paperID}));
 }
 
