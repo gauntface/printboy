@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # Get the code
-    - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
       with:
         submodules: true
 
@@ -83,7 +83,7 @@ jobs:
         tar -zcvf ../printboy-v${{ steps.version.outputs.VERSION }}.tar.gz .
 
     - name: Create release on GitHub 📦
-      uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1
+      uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # v1
       with:
         tag: v${{ steps.version.outputs.VERSION }}
         generateReleaseNotes: true
