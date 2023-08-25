@@ -48,7 +48,7 @@ export async function getCurrentPaperSize() {
 			return PAPER_SIZES[current.id];
 		}
 	} catch (err) {
-		console.warn('Failed to get current paper size: ', err);
+		// No paper size selected, use default
 	}
 	return PAPER_SIZES[30252];
 }

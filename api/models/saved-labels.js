@@ -1,7 +1,7 @@
 import path from 'path';
 import {writeFile, readdir, readFile, rm} from 'node:fs/promises';
 import {pathForLabelSettings} from './constants.js';
-import {hashForValue} from '../utils/files.js';
+import {hashForValue, exists} from '../utils/files.js';
 import {getPresetImage} from './saved-images.js';
 import { getPresetTitle } from './saved-titles.js';
 import { getPresetAddress } from './saved-addresses.js';
@@ -72,5 +72,8 @@ export async function addLabel(newLabel) {
 
 export async function deletePresetLabel(filename) {
 	const p = await pathForLabelSettings(PRESET_LABELS_DIR);
-	await rm(path.join(p, filename));
+	const file = path.join(p, filename);
+	if (await exists(file)) {
+		await rm(file);
+	}
 }

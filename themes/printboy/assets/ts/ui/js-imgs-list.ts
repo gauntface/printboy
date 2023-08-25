@@ -23,9 +23,11 @@ function setPreview(element, imgs: Array<LabelImage>) {
     wrapper.appendChild(c);
 
     const input = document.createElement('input');
+    input.classList.add("js-label-image");
     input.type = "radio";
     input.name = "imageFilename";
     input.value = i.filename;
+    input.setAttribute("base64", i.base64);
 
     const label = document.createElement('label');
     label.classList.add(CLASSNAME_LABEL);

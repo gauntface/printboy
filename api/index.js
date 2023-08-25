@@ -161,7 +161,7 @@ app.post('/api/print', async (req, res) => {
 		tmpfile,
   ];
 
-  for (let i = 0; i < copies; i++) {
+  for (let i = 0; i < quantity; i++) {
     try {
       await execP(args.join(' '));
     } catch (err) {

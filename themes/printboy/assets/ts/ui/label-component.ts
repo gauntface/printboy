@@ -6,16 +6,17 @@ export class LabelComponent {
   private widthInches: number;
   private heightInches: number;
 	private debug: boolean;
+	private fontLoaded: boolean;
 
   constructor(canvas: HTMLCanvasElement, debug = false) {
     this.canvas = canvas;
 		this.debug = debug;
     const context = canvas.getContext('2d');
-			if (!context) {
-					throw new Error('Failed to get a 2d context');
-			}
-			this.context = context;
-
+		if (!context) {
+				throw new Error('Failed to get a 2d context');
+		}
+		this.context = context;
+		this.fontLoaded = false;
 
     this.updatePaperSize();
     this.draw();
@@ -27,7 +28,26 @@ export class LabelComponent {
     this.heightInches = 1.125;
   }
 
-  draw() {
+	setImage(b64) {
+		this.canvas.attributes['image'] = b64;
+		this.draw();
+	}
+
+	setTitle(t) {
+		this.canvas.attributes['title'] = t;
+		this.draw();
+	}
+
+	setContent(t) {
+		this.canvas.attributes['content'] = t;
+		this.draw();
+	}
+
+  async draw() {
+		if (!this.fontLoaded) {
+			await this.waitForFonts();
+			this.fontLoaded = true;
+		}
     this.canvas.width = Math.floor(this.widthInches * 300);
 		this.canvas.height = Math.floor(this.heightInches * 300);
 
@@ -61,6 +81,40 @@ export class LabelComponent {
 
 		this.drawDebug(padding, gap, widths);
   }
+
+	async waitForFonts() {
+		return new Promise(async (resolve) => {
+			const fontface = await document.fonts.ready;
+			const want = [
+				{family: "Roboto", weight: 400},
+				{family: "Roboto", weight: 700},
+			];
+			const missing = [];
+			for (const w of want) {
+				if (!fontface.check(`${w.weight} 16px ${w.family}`)) {
+					missing.push(w);
+				}
+			}
+			if (!missing.length) {
+				resolve(undefined);
+				return;
+			}
+
+			document.fonts.onloadingdone = (e) => {
+				for (const w of missing) {
+					const ff = e.fontfaces.find(f => f.family == w.family && f.weight == w.weight);
+					if (!ff) {
+						logger.warn(`Still waiting for font ${w} to load`);
+						return;
+					}
+				}
+				resolve(undefined);
+			};
+			for (const m of missing) {
+				await document.fonts.load(`${m.weight} 16px ${m.family}`);
+			}
+		})
+	}
 
 	getColumnWidths(padding, gap, columns) {
 		const widths: Array<number> = [];
@@ -249,6 +303,18 @@ export class LabelComponent {
 			default:
 				throw new Error(`Unexpected number of columns: ${cols.length}`);
 		}
+	}
+
+	asBase64() {
+		return this.canvas.toDataURL();
+	}
+
+	widthInInches() {
+		return this.widthInches;
+	}
+
+	heightInInches() {
+		return this.heightInches;
 	}
 }
 

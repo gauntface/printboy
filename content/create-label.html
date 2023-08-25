@@ -4,7 +4,10 @@ title: "Create New Label"
 
 <h1>Create New Label</h1>
 
-<form class="l-form" method="post" action="{{< api_domain >}}/api/label" encType="multipart/form-data">
+<label>Preview</label>
+<div class="l-labels-list js-create-label"></div>
+
+<form class="l-form js-create-label__form" method="post" action="{{< api_domain >}}/api/label" encType="multipart/form-data">
   <input type="hidden" name="redirect" value="/print-label">
 
   <h2>Select an Image</h2>
@@ -13,10 +16,10 @@ title: "Create New Label"
 
   <h2>Label Details</h2>
   <label for="title">Name of Label</label>
-  <input id="title" name="title" type="text" />
+  <input id="title" class="js-label-title" name="title" type="text" />
 
   <label for="content">Address</label>
-  <textarea id="content" name="content" rows="5"></textarea>
+  <textarea id="content" class="js-label-content" name="content" rows="5"></textarea>
 
   <button class="c-btn">Save Label</button>
 </form>

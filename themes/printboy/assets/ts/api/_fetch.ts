@@ -5,7 +5,15 @@ async function _fetch(path, opts) {
   const resp = await fetch(`${apiDomain}${path}`, opts);
   if (resp.status !== 200) {
     logger.error(`API call was unccessful`, resp);
-    throw new Error(`API call was unsuccessful: ${resp.statusText}`);
+    let text;
+    let json;
+    try {
+      text = await resp.text();
+      json = JSON.stringify(JSON.parse(text), null, 2);
+    } catch {
+      // NOOP - this is just best effort
+    }
+    throw new Error(`API call was unsuccessful: (${resp.status}) ${resp.statusText} - ${json || text}`);
   }
   return resp.json();
 }

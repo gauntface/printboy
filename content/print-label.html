@@ -5,9 +5,9 @@ title: "Print Labels"
 <h1>Print Label</h1>
 
 <label>Preview</label>
-<div class="l-labels-list js-print-label"></div>
+<div class="l-labels-list js-print-preview"></div>
 
-<form class="l-form" method="post" encType="multipart/form-data">
+<form class="l-form" method="post" action="{{< api_domain >}}/api/print" encType="multipart/form-data">
   <label for="quantity">Quantity</label>
   <input id="quantity" name="quantity" type="number" value="1" />
 
@@ -15,6 +15,6 @@ title: "Print Labels"
   <select name="size" id="size" class="js-paper-select-input">
   </select>
 
-  <input type="submit" name="print" value="Print Label" class="c-btn" />
-  <input type="submit" name="delete" value="Delete Label" class="c-btn c-btn--danger" />
+  <input type="submit" name="print" value="Print Label" class="c-btn js-print-label" disabled />
+  <input type="submit" name="delete" value="Delete Label" class="c-btn c-btn--danger js-delete-label" disabled />
 </form>
