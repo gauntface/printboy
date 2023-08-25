@@ -2,7 +2,7 @@
   "name": "@gauntface/printboy",
   "version": "0.0.13",
   "scripts": {
-    "build": "npm run clean && cp -r api/. build && npm run build-hugo && npm run process-html",
+    "build": "npm run clean && npm run build-hugo && npm run process-html && cp -r api/. build && cp package.json build/",
     "build-hugo": "hugo && rm -rf tmp && cp -r build/static tmp",
     "build-quick": "npm run clean && cp -r tmp build/static && npm run process-html",
     "clean": "rm -rf build && mkdir -p build",

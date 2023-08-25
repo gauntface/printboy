@@ -20,7 +20,7 @@ const argv = yargs(hideBin(process.argv)).argv
 const execP = util.promisify(exec);
 
 const app = express();
-const port = 1314;
+const port = process.env.PORT || 1314;
 
 if (argv.cors) {
   console.warn(`⚠️ Enabling cors for ${argv.cors}`);
