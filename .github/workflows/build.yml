@@ -33,11 +33,13 @@ jobs:
         hugo-version: '0.101.0'
 
     # Install dependencies
-    - name: Install NPM Deps 🌎
+    - name: Install Deps 🌎
       run: |
         npm install
-        go install github.com/gauntface/go-html-asset-manager/v4/cmds/htmlassets@latest
-        go install github.com/gauntface/go-html-asset-manager/v4/cmds/genimgs@latest
+        go install github.com/gauntface/go-html-asset-manager/v5/cmds/htmlassets@latest
+        go install github.com/gauntface/go-html-asset-manager/v5/cmds/genimgs@latest
         go install github.com/tdewolff/minify/v2/cmd/minify@latest
     - name: Build 🔧
       run: npm run build
+    - name: Docker 🐳
+      run: make docker-build

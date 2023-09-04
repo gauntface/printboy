@@ -1,4 +1,4 @@
-import {apiDomain} from '../config';
+import {apiDomain} from '../../themes/printboy/assets/ts/config';
 import { LabelPreview } from "../render/labelpreview";
 
 export async function printLabel(lp: LabelPreview, copies: number) {

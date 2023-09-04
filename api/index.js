@@ -4,7 +4,7 @@ import fileUpload from 'express-fileupload';
 import {getPresetImages, uploadImage, deletePresetImage} from './models/saved-images.js';
 import {getPresetTitles, addTitle, deletePresetTitle} from './models/saved-titles.js';
 import {getPresetAddresses, addAddress, deletePresetAddress} from './models/saved-addresses.js';
-import {getPresetLabels, addLabel, deletePresetLabel} from './models/saved-labels.js';
+import {getPresetLabels, addLabel, deletePresetLabel, getSavedLabel} from './models/saved-labels.js';
 import {setCurrentPaperSize, getCurrentPaperSize, getAllPaperSizes} from './models/paper.js';
 import {exec} from 'node:child_process';
 import util from 'util';
@@ -20,7 +20,7 @@ const argv = yargs(hideBin(process.argv)).argv
 const execP = util.promisify(exec);
 
 const app = express();
-const port = 1314;
+const port = process.env.PORT || 1314;
 
 if (argv.cors) {
   console.warn(`⚠️ Enabling cors for ${argv.cors}`);
@@ -33,11 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
-app.get('/api/labels/images', async (req, res) => {
+app.get('/api/label/images', async (req, res) => {
   res.json(await getPresetImages());
 });
 
-app.delete('/api/labels/images', async (req, res) => {
+app.delete('/api/label/image', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({
@@ -51,7 +51,7 @@ app.delete('/api/labels/images', async (req, res) => {
   res.json({});
 });
 
-app.post('/api/labels/images', async (req, res) => {
+app.post('/api/label/images', async (req, res) => {
   const redirect = req.headers.referer || '/';
   if (!req.files || !req.files['upload-image']) {
     res.redirect(redirect);
@@ -134,12 +134,12 @@ app.post('/api/print', async (req, res) => {
     return;
   }
 
-  const { copies, base64, widthInches, heightInches } = req.body;
-  if (copies < 1) {
+  const { quantity, base64, widthInches, heightInches } = req.body;
+  if (quantity < 1) {
     res.status(500);
     res.json({
       error: {
-        msg: 'Invalid copies value',
+        msg: 'Invalid quantity value',
       },
     });
     return;
@@ -161,7 +161,7 @@ app.post('/api/print', async (req, res) => {
 		tmpfile,
   ];
 
-  for (let i = 0; i < copies; i++) {
+  for (let i = 0; i < quantity; i++) {
     try {
       await execP(args.join(' '));
     } catch (err) {
@@ -179,25 +179,35 @@ app.post('/api/print', async (req, res) => {
   res.json({});
 });
 
-app.get('/api/labels/presets', async (req, res) => {
+app.get('/api/labels', async (req, res) => {
   res.json(await getPresetLabels());
 });
 
-app.post('/api/labels/presets', async (req, res) => {
+
+app.get('/api/label/:filename', async (req, res) => {
+  res.json(await getSavedLabel(req.params.filename));
+});
+
+app.post('/api/label', async (req, res) => {
   if (!req.body) {
-    res.status(500);
+    res.status(400);
     res.json({
       error: {
-        msg: 'Body required',
-      },
+        msg: 'Request must contain a body.',
+      }
     });
     return;
   }
 
   try {
-    const { imageID, titleID, addressID } = req.body;
-    await addLabel(req.body);
-    res.json({});
+    const filename = await addLabel(req.body);
+    if (req.body.redirect) {
+      const url = new URL(req.body.redirect, req.headers.referer || '/');
+      url.searchParams.set('label', filename);
+      res.redirect(url.href);
+    } else {
+      res.json({});
+    }
   } catch (err) {
     res.status(400);
     res.json({
@@ -208,7 +218,7 @@ app.post('/api/labels/presets', async (req, res) => {
   }
 });
 
-app.delete('/api/labels/presets', async (req, res) => {
+app.delete('/api/label', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({

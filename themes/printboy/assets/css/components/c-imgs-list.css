@@ -1,0 +1,19 @@
+.c-imgs-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--m-padding);
+}
+
+.c-imgs-list__label > input {
+  width: 0;
+  height: 0;
+}
+
+.c-imgs-list__label > input + figure {
+  padding: var(--m-padding);
+  border-radius: var(--border-radius);
+}
+
+.c-imgs-list__label > input:checked + figure {
+  background-color: var(--grey);
+}

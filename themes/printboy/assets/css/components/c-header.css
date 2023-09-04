@@ -1,0 +1,21 @@
+.c-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--m-padding);
+  padding: var(--xxl-padding);
+}
+
+.c-header--title {
+  flex-direction: row;
+}
+
+.c-header h1 {
+  margin: 0;
+}
+
+.c-header a {
+  text-decoration: none;
+  color: inherit;
+}

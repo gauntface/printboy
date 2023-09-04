@@ -1,0 +1,13 @@
+---
+title: "Add New Image"
+---
+
+<h1>Add New Image</h1>
+
+<form class="l-form" method="post" action="{{< api_domain >}}/api/label/images" encType="multipart/form-data">
+  <label class="c-img-drop js-img-drop" for="img-file-input"><input id="img-file-input" type="file" accept=".svg" name="upload-image" /></label>
+  <div class="js-img-drop-preview"></div>
+  <button class="c-btn">Save Image(s)</button>
+
+  <input type="hidden" name="redirect" value="/create-label">
+</form>

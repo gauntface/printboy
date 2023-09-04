@@ -1,4 +1,7 @@
 {{ define "main" }}
+
+{{ partial "components/header.html" (dict "variant" "title") }}
+
 {{ partial "layouts/l-default-open.html" . }}
 {{.Content}}
 {{ partial "layouts/l-default-close.html" . }}

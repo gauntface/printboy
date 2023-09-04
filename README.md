@@ -21,7 +21,7 @@ A lot of this is from these articles:
 - https://www.baitando.com/it/2017/12/12/install-dymo-labelwriter-on-headless-linux
 - https://www.taklischris.info/other/use-your-dymo-printer-on-ubuntu
 
-1. Install CUPs `sudo apt-get install -y git cups cups-client printer-driver-dymo` or `sudo dnf install cups-deve;`
+1. Install CUPs `sudo apt-get install -y git cups cups-client printer-driver-dymo` or `sudo dnf install cups-devel`
 1. Get printer definition
     1. `git clone https://github.com/matthiasbock/dymo-cups-drivers.git`
     1. `sudo mkdir -p /usr/share/cups/model`

@@ -1,0 +1,9 @@
+{
+  "css": {
+    "async": [
+      {
+        "src": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;600;700&family=Roboto:wght@400;700&display=swap"
+      }
+    ]
+  }
+}

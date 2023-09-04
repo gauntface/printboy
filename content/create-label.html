@@ -1,94 +1,25 @@
 ---
-title: "New Label"
+title: "Create New Label"
 ---
 
-<div class="drac-my-md">
-	<h1 class="drac-heading drac-heading-2xl">New Label</h1>
-</div>
+<h1>Create New Label</h1>
 
-<canvas class="c-label-preview js-label-preview"></canvas>
+<label>Preview</label>
+<div class="l-labels-list js-create-label"></div>
 
-<ul class="drac-tabs drac-tabs-cyan c-full-width-tabs js-tabs" for="create-label">
-  <li class="drac-tab">
-    <div class="drac-tab-link drac-text js-tab" for="select-img">Select Image</div>
-  </li>
-  <li class="drac-tab">
-    <div class="drac-tab-link drac-text js-tab" for="select-title">Select Title</div>
-  </li>
-  <li class="drac-tab">
-    <div class="drac-tab-link drac-text js-tab" for="select-address">Select Address</div>
-  </li>
-	<li class="drac-tab">
-    <div class="drac-tab-link drac-text js-tab" for="save-print">Save / Print</div>
-  </li>
-</ul>
+<form class="l-form js-create-label__form" method="post" action="{{< api_domain >}}/api/label" encType="multipart/form-data">
+  <input type="hidden" name="redirect" value="/print-label">
 
-<div name="create-label" class="l-tabs">
+  <h2>Select an Image</h2>
+  <div class="c-imgs-list js-imgs-list"></div>
+  <a class="c-btn" href="/add-image">Add new image</a>
 
-	<!-- Select Image -->
-	<div class="l-tabs__content" name="select-img">
-		<h2 class="drac-heading drac-heading-xl drac-text-white">Select Image</h2>
+  <h2>Label Details</h2>
+  <label for="title">Name of Label</label>
+  <input id="title" class="js-label-title" name="title" type="text" />
 
-		<div class="drac-box drac-p-md drac-my-md drac-bg-black-secondary drac-rounded-lg">
-			<div class="js-select-img l-imgradios">
-				<div class="c-select-img">
-					<input type="radio" name="labelimage" id="no-image" value="" checked />
-					<label for="no-image" class="drac-text drac-text-white">
-						<img />
-						<span>No Image</span>
-					</label>
-				</div>
-			</div>
-		</div>
-	</div>
+  <label for="content">Address</label>
+  <textarea id="content" class="js-label-content" name="content" rows="5"></textarea>
 
-	<!-- Select Title -->
-	<div class="l-tabs__content" name="select-title">
-		<h2 class="drac-heading drac-heading-xl drac-text-white">Select Title</h2>
-
-		<div class="drac-box drac-p-md drac-my-md drac-bg-black-secondary drac-rounded-lg">
-			<div class="js-select-title l-titleradios">
-				<div class="c-create-label-selection">
-					<input type="radio" name="labeltitle" id="no-title" value="" checked>
-					<label for="no-title">No Title</label>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Select Address -->
-	<div class="l-tabs__content" name="select-address">
-		<h2 class="drac-heading drac-heading-xl drac-text-white">Select Address</h2>
-
-		<div class="drac-box drac-p-md drac-my-md drac-bg-black-secondary drac-rounded-lg">
-			<div class="js-select-address l-addressradios">
-				<div class="c-create-label-selection">
-					<input type="radio" name="labeladdress" id="no-address" value="" checked>
-					<label for="no-address">No Address</label>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Save Print -->
-	<div class="l-tabs__content" name="save-print">
-		<h2 class="drac-heading drac-heading-xl drac-text-white">Save and/or Print</h2>
-
-		<div class="l-input-btn drac-my-sm">
-			<input placeholder="Number of copies" type="number" value="1" class="drac-input drac-input-white drac-text-white js-print-copies" />
-			<button disabled class="drac-btn drac-bg-purple-cyan drac-text-black js-print-label" href="/settings/titles/new">Print Label</button>
-		</div>
-
-		<div class="drac-box drac-my-md">
-			<hr class="drac-divider drac-border-orange" />
-		</div>
-
-		<div class="drac-text drac-text-center">
-			<button class="drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple js-save-label">Save for Quick Print</button>
-		</div>
-	</div>
-</div>
-
-<!-- These are used to force fonts to download -->
-<div class="c-label-preview__title">.</div>
-<div class="c-label-preview__address">.</div>
+  <button class="c-btn">Save Label</button>
+</form>

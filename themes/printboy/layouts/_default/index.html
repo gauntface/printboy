@@ -1,5 +1,8 @@
 {{ define "main" }}
 {{ partial "layouts/l-default-open.html" . }}
+
+{{ partial "components/header.html" }}
+
 {{.Content}}
 {{ partial "layouts/l-default-close.html" . }}
 {{ end }}

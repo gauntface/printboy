@@ -1,0 +1,5 @@
+figure {
+  display: inline-flex;
+  flex-direction: column-reverse;
+  margin: 0;
+}
