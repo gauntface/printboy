@@ -1,17 +1,9 @@
 name: Release 🚀
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version (i.e. patch, minor or major)'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-        - patch
-        - minor
-        - major
+  push:
+    tags:
+      - 'v*'
 
 concurrency:
   group: ${{ github.ref }}
@@ -26,68 +18,24 @@ jobs:
       with:
         submodules: true
 
-    # Setup environment
-    - name: Install Go
-      uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4
+    - name: Log in to the Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
       with:
-        go-version: '^1.18.3'
-    - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
       with:
-        registry-url: https://registry.npmjs.org/
-    - name: Install Hugo
-      uses: peaceiris/actions-hugo@16361eb4acea8698b220b76c0d4e84e1fd22c61d # v2
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
       with:
-        hugo-version: '0.101.0'
-
-    # Install dependencies
-    - name: Install NPM Deps 🌎
-      run: |
-        npm install
-        go install github.com/gauntface/go-html-asset-manager/v4/cmds/htmlassets@latest
-        go install github.com/gauntface/go-html-asset-manager/v4/cmds/genimgs@latest
-        go install github.com/tdewolff/minify/v2/cmd/minify@latest
-    - name: Build 🔧
-      run: npm run build
-
-    - name: Update package.json ⬆️
-      # In case the version remains the same (i.e. re-run a failed release)
-      run: npm version ${{ inputs.version }} --no-git-tag-version || true
-    - name: Get version from package.json
-      id: version
-      run: echo "VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_OUTPUT
-
-    - name: Create Release Directory 📂
-      run: |
-        mkdir release
-        cp LICENSE release/
-        cp package.json release/
-        cp README.md release/
-        cd build && cp -r . ../release/
-
-    - name: Publish package on NPM 📦
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        cd release
-        npm publish --access public
-
-    - name: Commit any package.json changes 📌
-      uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4
-      with:
-        commit_message: "Releasing ${{ steps.version.outputs.VERSION }}"
-        file_pattern: 'package.json'
-
-    - name: Create tar for GitHub release 🤐
-      run: |
-        cd release
-        tar -zcvf ../printboy-v${{ steps.version.outputs.VERSION }}.tar.gz .
-
-    - name: Create release on GitHub 📦
-      uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # v1
-      with:
-        tag: v${{ steps.version.outputs.VERSION }}
-        generateReleaseNotes: true
-        # In case the release exists (i.e. re-run a failed release)
-        allowUpdates: true
-        artifacts: "printboy-v${{ steps.version.outputs.VERSION }}.tar.gz"
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
 
