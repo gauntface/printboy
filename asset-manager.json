@@ -3,7 +3,8 @@
 	"base-url": "http://printboy.local",
 	"assets": {
 		"static-dir": "build/static/",
-		"generated-dir": "build/static/generated/"
+		"generated-dir": "build/static/generated/",
+		"json-dir": "data/base-theme/"
 	},
 	"gen-assets": {
 		"static-dir": "static/",

@@ -44,8 +44,11 @@ export class LabelComponent {
 	}
 
   async draw() {
+		console.log(`this.fontLoaded?`);
 		if (!this.fontLoaded) {
+			console.log(`Start wait...`);
 			await this.waitForFonts();
+			console.log(`Wait over...`);
 			this.fontLoaded = true;
 		}
     this.canvas.width = Math.floor(this.widthInches * 300);
@@ -111,6 +114,7 @@ export class LabelComponent {
 				resolve(undefined);
 			};
 			for (const m of missing) {
+				console.log('Loading font: ', `${m.weight} 16px ${m.family}`);
 				await document.fonts.load(`${m.weight} 16px ${m.family}`);
 			}
 		})
