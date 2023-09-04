@@ -1,6 +1,6 @@
 FROM alpine AS builder
 
-COPY --from=golang:1.20-alpine /usr/local/go/ /usr/local/go/
+COPY --from=golang:1.21-alpine /usr/local/go/ /usr/local/go/
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:$PATH
