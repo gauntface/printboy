@@ -41,3 +41,5 @@ jobs:
         go install github.com/tdewolff/minify/v2/cmd/minify@latest
     - name: Build 🔧
       run: npm run build
+    - name: Docker 🐳
+      run: make docker-build
