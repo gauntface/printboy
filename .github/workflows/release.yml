@@ -19,7 +19,7 @@ jobs:
         submodules: true
 
     - name: Log in to the Container registry
-      uses: docker/login-action@1f401f745bf57e30b3a2800ad308a87d2ebdf14b
+      uses: docker/login-action@3d58c274f17dffee475a5520cbe67f0a882c4dbb
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
@@ -27,12 +27,12 @@ jobs:
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
-      uses: docker/metadata-action@62339db73c56dd749060f65a6ebb93a6e056b755
+      uses: docker/metadata-action@f3c3cad8ad5e1076ffba2449385b1547f1e3c566
       with:
         images: ghcr.io/gauntface/printboy
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@d3afd779e409ac26db5374fb27fe4aae9f6adb42
+      uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56
       with:
         context: .
         push: true
