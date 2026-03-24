@@ -42,13 +42,12 @@ title: "Settings"
 
     <h3>Add New Image</h3>
 
-    <form method="post" action="{{< api_domain >}}/api/labels/images" encType="multipart/form-data">
+    <form method="post" action="{{< api_domain >}}/api/labels/images" encType="multipart/form-data" class="js-api-form">
         <div class="l-input-btn">
             <label class="c-wrap-file-input drac-btn drac-bg-purple-transparent drac-btn-ghost drac-text-purple">
-                <input type="file" accept=".svg" name="upload-image">
+                <input type="file" accept=".svg" name="upload-image" required>
                 Select SVG File
             </label>
-            <input type="hidden" name="form-url" value="/settings/">
             <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Upload</button>
         </div>
     </form>
@@ -71,14 +70,14 @@ title: "Settings"
 
     <h3>Add New Title</h3>
 
-    <form method="post" action="{{< api_domain >}}/api/labels/titles" encType="multipart/form-data">
+    <form method="post" action="{{< api_domain >}}/api/labels/titles" encType="multipart/form-data" class="js-api-form">
         <div class="l-input-btn">
             <input
                 name="title"
                 placeholder="New title...."
                 class="drac-input drac-input-purple drac-text-purple"
+                required
             />
-            <input type="hidden" name="form-url" value="/settings/">
             <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
         </div>
     </form>
@@ -101,15 +100,15 @@ title: "Settings"
 
     <h3>Add New Address</h3>
 
-    <form method="post" action="{{< api_domain >}}/api/labels/addresses" encType="multipart/form-data">
+    <form method="post" action="{{< api_domain >}}/api/labels/addresses" encType="multipart/form-data" class="js-api-form">
         <div class="l-input-btn">
             <textarea
                 name="address"
                 placeholder="New address...."
                 rows="6"
                 class="c-textarea drac-py-xs drac-input drac-input-purple drac-text-purple"
+                required
             ></textarea>
-            <input type="hidden" name="form-url" value="/settings/">
             <button class="drac-btn drac-bg-purple-cyan drac-text-black" type="submit">Add</button>
         </div>
     </form>

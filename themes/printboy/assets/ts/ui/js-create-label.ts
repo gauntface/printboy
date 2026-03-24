@@ -61,6 +61,26 @@ async function labelForm() {
         label.setContent(contentInput.value);
       });
     }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form as HTMLFormElement);
+      const data = Object.fromEntries(formData.entries());
+      try {
+        const {fetch} = await import('../api/_fetch');
+        const resp = await fetch((form as HTMLFormElement).action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        window.location.href = `/print-label?label=${resp.filename}`;
+      } catch (err) {
+        console.error('Failed to save label:', err);
+        alert(`Failed to save label: ${err.message}`);
+      }
+    });
   }
 }
 

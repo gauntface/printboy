@@ -33,11 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(new URL('.', import.meta.url).pathname, 'static')));
 
-app.get('/api/label/images', async (req, res) => {
+app.get('/api/labels/images', async (req, res) => {
   res.json(await getPresetImages());
 });
 
-app.delete('/api/label/image', async (req, res) => {
+app.delete('/api/labels/images', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({
@@ -51,16 +51,20 @@ app.delete('/api/label/image', async (req, res) => {
   res.json({});
 });
 
-app.post('/api/label/images', async (req, res) => {
-  const redirect = req.headers.referer || '/';
+app.post('/api/labels/images', async (req, res) => {
   if (!req.files || !req.files['upload-image']) {
-    res.redirect(redirect);
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'No image uploaded.',
+      }
+    });
     return;
   }
 
   const imgFile = req.files['upload-image'];
   await uploadImage(imgFile);
-  res.redirect(redirect);
+  res.json({});
 });
 
 app.get('/api/labels/titles', async (req, res) => {
@@ -82,15 +86,19 @@ app.delete('/api/labels/titles', async (req, res) => {
 });
 
 app.post('/api/labels/titles', async (req, res) => {
-  const redirect = req.headers.referer || '/';
   if (!req.body || !req.body.title) {
-    res.redirect(redirect);
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Title must be provided.',
+      }
+    });
     return;
   }
 
   const title = req.body.title;
   await addTitle(title);
-  res.redirect(redirect);
+  res.json({});
 });
 
 app.get('/api/labels/addresses', async (req, res) => {
@@ -112,15 +120,19 @@ app.delete('/api/labels/addresses', async (req, res) => {
 });
 
 app.post('/api/labels/addresses', async (req, res) => {
-  const redirect = req.headers.referer || '/';
   if (!req.body || !req.body.address) {
-    res.redirect(redirect);
+    res.status(400);
+    res.json({
+      error: {
+        msg: 'Address must be provided.',
+      }
+    });
     return;
   }
 
   const address = req.body.address;
   await addAddress(address);
-  res.redirect(redirect);
+  res.json({});
 });
 
 app.post('/api/print', async (req, res) => {
@@ -184,11 +196,11 @@ app.get('/api/labels', async (req, res) => {
 });
 
 
-app.get('/api/label/:filename', async (req, res) => {
+app.get('/api/labels/:filename', async (req, res) => {
   res.json(await getSavedLabel(req.params.filename));
 });
 
-app.post('/api/label', async (req, res) => {
+app.post('/api/labels', async (req, res) => {
   if (!req.body) {
     res.status(400);
     res.json({
@@ -201,13 +213,9 @@ app.post('/api/label', async (req, res) => {
 
   try {
     const filename = await addLabel(req.body);
-    if (req.body.redirect) {
-      const url = new URL(req.body.redirect, req.headers.referer || '/');
-      url.searchParams.set('label', filename);
-      res.redirect(url.href);
-    } else {
-      res.json({});
-    }
+    res.json({
+      filename,
+    });
   } catch (err) {
     res.status(400);
     res.json({
@@ -218,7 +226,7 @@ app.post('/api/label', async (req, res) => {
   }
 });
 
-app.delete('/api/label', async (req, res) => {
+app.delete('/api/labels', async (req, res) => {
   if (!req.body || !req.body.filename) {
     res.status(400);
     res.json({
