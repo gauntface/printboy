@@ -7,9 +7,7 @@ title: "Create New Label"
 <label>Preview</label>
 <div class="l-labels-list js-create-label"></div>
 
-<form class="l-form js-create-label__form" method="post" action="{{< api_domain >}}/api/label" encType="multipart/form-data">
-  <input type="hidden" name="redirect" value="/print-label">
-
+<form class="l-form js-create-label__form" method="post" action="{{< api_domain >}}/api/labels">
   <h2>Select an Image</h2>
   <div class="c-imgs-list js-imgs-list"></div>
   <a class="c-btn" href="/add-image">Add new image</a>

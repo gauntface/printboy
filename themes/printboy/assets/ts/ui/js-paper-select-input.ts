@@ -2,8 +2,8 @@ import {OnLoad} from '../utils/_onload';
 import { apiDomain } from '../config';
 import {logger} from '@gauntface/logger';
 
-async function imgDrop() {
-  const element = document.querySelector('.js-paper-select-input');
+async function paperSelect() {
+  const element = document.querySelector<HTMLSelectElement>('.js-paper-select-input');
   if (!element) {
     logger.error('Failed to find js-paper-select-input element');
     return;
@@ -26,4 +26,4 @@ async function imgDrop() {
   }
 }
 
-OnLoad(imgDrop);
+OnLoad(paperSelect);

@@ -20,7 +20,7 @@ async function deleteLabel() {
     e.preventDefault();
     element.disabled = true;
     try {
-      await fetch('/api/label', {
+      await fetch('/api/labels', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

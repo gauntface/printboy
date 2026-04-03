@@ -94,7 +94,7 @@ function initInput(input) {
 }
 
 async function imgDrop() {
-  const element = document.querySelector('.js-img-drop');
+  const element = document.querySelector<HTMLElement>('.js-img-drop');
   if (!element) {
     logger.error('Failed to find js-img-drop element');
     return;
@@ -106,6 +106,25 @@ async function imgDrop() {
   }
   initDragAndDrop(element, input);
   initInput(input);
+
+  const form = document.querySelector<HTMLFormElement>('.js-add-image-form');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      try {
+        const {fetch} = await import('../api/_fetch');
+        await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+        });
+        window.location.href = '/create-label';
+      } catch (err) {
+        console.error('Failed to upload image:', err);
+        alert(`Failed to upload image: ${err.message}`);
+      }
+    });
+  }
 }
 
 OnLoad(imgDrop);

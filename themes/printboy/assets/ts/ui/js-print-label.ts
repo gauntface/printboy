@@ -25,7 +25,7 @@ async function printLabel() {
     throw new Error(`Failed to get "label" from the search parameters`);
   }
 
-  const labelData = await fetch(`/api/label/${filename}`, {
+  const labelData = await fetch(`/api/labels/${filename}`, {
     method: 'GET',
   });
 
