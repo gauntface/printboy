@@ -18,17 +18,17 @@
   },
   "devDependencies": {
     "@gauntface/logger": "^3.0.115",
-    "cssnano": "^7.0.0",
+    "cssnano": "^8.0.0",
     "postcss-cli": "^11.0.0",
     "postcss-import": "^16.0.0",
-    "postcss-preset-env": "^9.0.0"
+    "postcss-preset-env": "^11.0.0"
   },
   "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "express": "^5.0.0",
     "express-fileupload": "^1.4.0",
     "pm2": "^5.2.2",
-    "yargs": "^17.6.2"
+    "yargs": "^18.0.0"
   }
 }
