@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import * as path from 'path';
 
-import glob from 'glob';
+import { globSync } from 'glob';
 import postcss from 'postcss';
 import cssnano from 'cssnano';
 
@@ -36,9 +36,9 @@ async function start() {
 	];
 	const processor = postcss(plugins);
 
-	const cssFiles = glob.sync(path.join(BUILD_DIR, '**', '*.css'));
+	const cssFiles = globSync(path.join(BUILD_DIR, '**', '*.css'));
 
-	const varFiles = glob.sync(path.join(SRC_DIR, '**', 'variables', '*.css'));
+	const varFiles = globSync(path.join(SRC_DIR, '**', 'variables', '*.css'));
     const vfp = await generateVarsFile(varFiles);
 	if (vfp) {
 		cssFiles.push(vfp);
