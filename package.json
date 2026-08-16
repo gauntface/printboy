@@ -21,7 +21,7 @@
     "cssnano": "^8.0.0",
     "glob": "^13.0.6",
     "postcss-cli": "^11.0.0",
-    "postcss-import": "^16.0.0",
+    "postcss-import": "^17.0.0",
     "postcss-preset-env": "^11.0.0"
   },
   "type": "module",
